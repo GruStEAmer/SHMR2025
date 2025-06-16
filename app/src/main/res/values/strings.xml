@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">SHMR</string>
+    <string name="settings_dark_theme_switch">Темная тема</string>
+    <string name="settings_basic_color">Основной цвет</string>
+    <string name="settings_sound">Звуки</string>
+    <string name="settings_haptics">Хаптики</string>
+    <string name="settings_code_password">Код пароль</string>
+    <string name="settings_synchronization">Синхронизация</string>
+    <string name="settings_language">Язык</string>
+    <string name="settings_about_program">О программе</string>
+    <string name="articles_search_article">Найти статью</string>
 </resources>

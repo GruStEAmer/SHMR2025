@@ -35,6 +35,8 @@ import com.example.shmr.ui.screens.CheckScreen
 import com.example.shmr.ui.screens.ExpensesScreen
 import com.example.shmr.ui.screens.IncomeScreen
 import com.example.shmr.ui.screens.SettingsScreen
+import com.example.shmr.ui.theme.Green
+import com.example.shmr.ui.theme.LightGreen
 
 @Composable
 fun NavigationScreen(navController:NavHostController = rememberNavController()) {
@@ -97,8 +99,8 @@ fun AppBottomBar(
                         },
                 label = { Text(item.text) },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = Color(0xFF2AE881),
-                    indicatorColor = Color(0xFFD4FAE6)
+                    selectedIconColor = Green,
+                    indicatorColor = LightGreen
                 )
             )
         }
@@ -143,7 +145,7 @@ fun AppTopBar(navController: NavHostController) {
                 },
         modifier = Modifier.fillMaxWidth(),
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color(0xFF2AE881),
+            containerColor = Green,
         )
     )
 }

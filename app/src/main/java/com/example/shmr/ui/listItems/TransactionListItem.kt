@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -16,16 +14,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.shmr.R
+import com.example.shmr.ui.theme.LightGreen
 
 @Composable
 fun TransactionListItem(
     name: String,
     emoji: String?,
     categoryId: Int,
-    amount: Int,
+    amount: String,
     comment: String?,
     currency: String
 ) {
@@ -70,14 +70,14 @@ fun TransactionListItem(
                     text = emoji,
                     modifier = Modifier
                         .clip(CircleShape)
-                        .background(Color(0xFFD4FAE6)),
+                        .background(LightGreen),
                     fontSize = 22.sp
                 )
             }
         },
         trailingContent = {
             Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                painter = painterResource(R.drawable.ic_keyboard_arrow_right),
                 contentDescription = ""
             )
         }

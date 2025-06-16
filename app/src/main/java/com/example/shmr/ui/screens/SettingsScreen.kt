@@ -18,11 +18,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.shmr.listSettings
+import com.example.shmr.R
 import com.example.shmr.ui.listItems.SettingListItem
+import com.example.shmr.ui.theme.Green
+import com.example.shmr.ui.theme.LightGreen
 
 @Composable
 fun SettingsScreen() {
@@ -45,7 +47,7 @@ fun ChangeThemeItem() {
     ListItem(
         headlineContent = {
             Text(
-                text = "Темная тема"
+                text = stringResource(R.string.settings_dark_theme_switch)
             )
         },
         modifier = Modifier
@@ -57,14 +59,23 @@ fun ChangeThemeItem() {
                 checked = switchState,
                 onCheckedChange = { switchState = !switchState },
                 colors = SwitchDefaults.colors(
-                    checkedThumbColor = Color(0xFF2AE881),
-                    checkedTrackColor = Color(0xFFD4FAE6),
-                    checkedBorderColor = Color(0xFF2AE881)
+                    checkedThumbColor = Green,
+                    checkedTrackColor = LightGreen,
+                    checkedBorderColor = Green
                 )
             )
         }
     )
 }
+val listSettings = listOf(
+    R.string.settings_basic_color,
+    R.string.settings_sound,
+    R.string.settings_haptics,
+    R.string.settings_code_password,
+    R.string.settings_synchronization,
+    R.string.settings_language,
+    R.string.settings_about_program,
+)
 
 @Preview
 @Composable

@@ -5,6 +5,6 @@ data class TransactionUi(
     val name: String,
     val emoji: String?,
     val categoryId: Int,
-    val amount: Int,
+    val amount: String,
     val comment: String?
 )

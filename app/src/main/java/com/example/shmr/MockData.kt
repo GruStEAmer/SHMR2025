@@ -16,19 +16,19 @@ val listCategory = listOf<CategoryUi>(
 )
 
 val listExpensesTransaction = listOf<TransactionUi>(
-    TransactionUi(1, "Аренда квартиры", "\uD83C\uDFE1", 1, 100000, null),
-    TransactionUi(2, "Одежда", "\uD83D\uDC57", 2, 100000, null),
-    TransactionUi(3, "На собачку", "\uD83D\uDC36", 3, 100000, "Джек"),
-    TransactionUi(4, "На собачку", "\uD83D\uDC36", 4,100000, "Энни"),
-    TransactionUi(5, "Ремонт квартиры", "РК" , 5, 100000, null),
-    TransactionUi(6, "Продукты", "\uD83C\uDF6D", 6, 100000, null),
-    TransactionUi(7, "Спортзал", "\uD83C\uDFCB\uFE0F\u200D♂\uFE0F", 7, 100000, null),
-    TransactionUi(8, "Медицина", "\uD83D\uDC8A", 8, 100000, null),
+    TransactionUi(1, "Аренда квартиры", "\uD83C\uDFE1", 1, "100 000", null),
+    TransactionUi(2, "Одежда", "\uD83D\uDC57", 2, "100 000", null),
+    TransactionUi(3, "На собачку", "\uD83D\uDC36", 3, "100 000", "Джек"),
+    TransactionUi(4, "На собачку", "\uD83D\uDC36", 4,"100 000", "Энни"),
+    TransactionUi(5, "Ремонт квартиры", "РК" , 5, "100 000", null),
+    TransactionUi(6, "Продукты", "\uD83C\uDF6D", 6, "100 000", null),
+    TransactionUi(7, "Спортзал", "\uD83C\uDFCB\uFE0F\u200D♂\uFE0F", 7, "100 000", null),
+    TransactionUi(8, "Медицина", "\uD83D\uDC8A", 8, "100 000", null),
 )
 
 val listIncomeTransaction = listOf<TransactionUi>(
-    TransactionUi(1, "Зарплата", null, 1, 500000, null) ,
-    TransactionUi(2, "Подработка", null, 2, 100000, null)
+    TransactionUi(1, "Зарплата", null, 1, "500 000", null) ,
+    TransactionUi(2, "Подработка", null, 2, "100 000", null)
 )
 
 val accountExpenses = AccountStateUi(
@@ -43,16 +43,7 @@ val accountIncome = AccountStateUi(
     "600 000",
     "RUB"
 )
-val accountCheck = AccountStateUi(0, "Баланс", "-670000", "RUB")
+val accountCheck = AccountStateUi(0, "Баланс", "-670 000", "RUB")
 
 val accountCurrency = AccountStateUi(0, "Валюта", "" , "RUB")
 
-val listSettings = listOf(
-    "Основной цвет",
-    "Звуки",
-    "Хаптики",
-    "Код пароль",
-    "Синхронизация",
-    "Язык",
-    "О программе",
-)
