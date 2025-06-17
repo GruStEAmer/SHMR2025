@@ -1,4 +1,4 @@
-package com.example.shmr.ui.listItems
+package com.example.shmr.presentation.listItems
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.shmr.ui.theme.LightGreen
+import com.example.shmr.presentation.theme.LightGreen
 
 @Composable
 fun CategoryListItem(

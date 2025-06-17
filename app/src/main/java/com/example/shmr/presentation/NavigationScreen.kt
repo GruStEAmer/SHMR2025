@@ -1,4 +1,4 @@
-package com.example.shmr.ui
+package com.example.shmr.presentation
 
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -29,14 +29,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.shmr.ui.model.NavigationModel
-import com.example.shmr.ui.screens.ArticleScreen
-import com.example.shmr.ui.screens.CheckScreen
-import com.example.shmr.ui.screens.ExpensesScreen
-import com.example.shmr.ui.screens.IncomeScreen
-import com.example.shmr.ui.screens.SettingsScreen
-import com.example.shmr.ui.theme.Green
-import com.example.shmr.ui.theme.LightGreen
+import com.example.shmr.presentation.model.NavigationModel
+import com.example.shmr.presentation.screens.ArticleScreen
+import com.example.shmr.presentation.screens.CheckScreen
+import com.example.shmr.presentation.screens.ExpensesScreen
+import com.example.shmr.presentation.screens.IncomeScreen
+import com.example.shmr.presentation.screens.SettingsScreen
+import com.example.shmr.presentation.theme.Green
+import com.example.shmr.presentation.theme.LightGreen
 
 @Composable
 fun NavigationScreen(navController:NavHostController = rememberNavController()) {

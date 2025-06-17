@@ -1,4 +1,4 @@
-package com.example.shmr.ui.screens
+package com.example.shmr.presentation.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.shmr.accountCheck
 import com.example.shmr.accountCurrency
-import com.example.shmr.ui.components.CircleButton
-import com.example.shmr.ui.listItems.AccountListItem
+import com.example.shmr.presentation.components.CircleButton
+import com.example.shmr.presentation.listItems.AccountListItem
 
 @Composable
 fun CheckScreen() {

@@ -1,8 +1,8 @@
 package com.example.shmr
 
-import com.example.shmr.ui.model.AccountStateUi
-import com.example.shmr.ui.model.CategoryUi
-import com.example.shmr.ui.model.TransactionUi
+import com.example.shmr.presentation.model.AccountStateUi
+import com.example.shmr.presentation.model.CategoryUi
+import com.example.shmr.presentation.model.TransactionUi
 
 val listCategory = listOf<CategoryUi>(
     CategoryUi(1, "Аренда квартиры", "\uD83C\uDFE1"),

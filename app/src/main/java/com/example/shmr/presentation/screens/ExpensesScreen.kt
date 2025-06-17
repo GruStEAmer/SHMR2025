@@ -1,4 +1,4 @@
-package com.example.shmr.ui.screens
+package com.example.shmr.presentation.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -12,14 +12,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.shmr.accountIncome
-import com.example.shmr.listIncomeTransaction
-import com.example.shmr.ui.components.CircleButton
-import com.example.shmr.ui.listItems.AccountListItem
-import com.example.shmr.ui.listItems.TransactionListItem
+import com.example.shmr.accountExpenses
+import com.example.shmr.listExpensesTransaction
+import com.example.shmr.presentation.components.CircleButton
+import com.example.shmr.presentation.listItems.AccountListItem
+import com.example.shmr.presentation.listItems.TransactionListItem
+
 
 @Composable
-fun IncomeScreen() {
+fun ExpensesScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -30,18 +31,19 @@ fun IncomeScreen() {
                 .background(MaterialTheme.colorScheme.background)
         ) {
             AccountListItem(
-                accountIncome.name,
-                accountIncome.balance,
-                accountIncome.currency
+                accountExpenses.name,
+                accountExpenses.balance,
+                accountExpenses.currency
             )
 
             HorizontalDivider()
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
                 items(
-                    items = listIncomeTransaction,
+                    items = listExpensesTransaction,
                     key = { it -> it.id }
                 ) {
                     TransactionListItem(
@@ -50,7 +52,7 @@ fun IncomeScreen() {
                         categoryId = it.categoryId,
                         amount = it.amount,
                         comment = it.comment,
-                        currency = accountIncome.currency
+                        accountExpenses.currency
                     )
                 }
             }
@@ -61,6 +63,6 @@ fun IncomeScreen() {
 
 @Preview
 @Composable
-fun IncomeScreenPreview() {
-    IncomeScreen()
+fun ExpensesScreenPreview() {
+    ExpensesScreen()
 }

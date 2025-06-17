@@ -1,4 +1,4 @@
-package com.example.shmr.ui.theme
+package com.example.shmr.presentation.theme
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

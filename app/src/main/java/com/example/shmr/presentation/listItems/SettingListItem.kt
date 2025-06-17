@@ -1,4 +1,4 @@
-package com.example.shmr.ui.listItems
+package com.example.shmr.presentation.listItems
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth

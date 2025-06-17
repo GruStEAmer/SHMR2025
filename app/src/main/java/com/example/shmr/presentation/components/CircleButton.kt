@@ -1,4 +1,4 @@
-package com.example.shmr.ui.components
+package com.example.shmr.presentation.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding

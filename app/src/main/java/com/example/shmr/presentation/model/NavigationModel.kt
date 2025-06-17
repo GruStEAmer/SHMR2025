@@ -1,4 +1,4 @@
-package com.example.shmr.ui.model
+package com.example.shmr.presentation.model
 
 import com.example.shmr.R
 

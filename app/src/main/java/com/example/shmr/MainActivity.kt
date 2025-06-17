@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.example.shmr.ui.NavigationScreen
-import com.example.shmr.ui.theme.SHMRTheme
+import com.example.shmr.presentation.NavigationScreen
+import com.example.shmr.presentation.theme.SHMRTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
