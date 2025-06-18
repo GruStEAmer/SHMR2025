@@ -51,6 +51,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
 
+    //OkHttp
+    implementation(libs.okhttp)
+
     //Navigation
     implementation(libs.androidx.navigation.compose)
 

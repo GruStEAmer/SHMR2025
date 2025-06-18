@@ -30,7 +30,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.shmr.presentation.model.NavigationModel
-import com.example.shmr.presentation.screens.ArticleScreen
+import com.example.shmr.presentation.screens.CategoryScreen
 import com.example.shmr.presentation.screens.CheckScreen
 import com.example.shmr.presentation.screens.ExpensesScreen
 import com.example.shmr.presentation.screens.IncomeScreen
@@ -65,8 +65,8 @@ fun NavigationScreen(navController:NavHostController = rememberNavController()) 
             composable(route = NavigationModel.Expenses.route) {
                 ExpensesScreen()
             }
-            composable(route = NavigationModel.Articles.route){
-                ArticleScreen()
+            composable(route = NavigationModel.Categories.route){
+                CategoryScreen()
             }
         }
     }

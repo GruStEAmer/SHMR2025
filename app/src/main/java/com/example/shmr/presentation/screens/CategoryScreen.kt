@@ -24,12 +24,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.shmr.R
-import com.example.shmr.listCategory
 import com.example.shmr.presentation.listItems.CategoryListItem
+import com.example.shmr.presentation.viewModels.CategoryViewModel
 
 @Composable
-fun ArticleScreen() {
+fun CategoryScreen(categoryViewModel: CategoryViewModel = viewModel(factory = CategoryViewModel.Factory)) {
+
+    val uiState = categoryViewModel.uiState
     var value by rememberSaveable { mutableStateOf("") }
 
     Column(
@@ -44,7 +47,7 @@ fun ArticleScreen() {
                 .fillMaxWidth()
                 .height(50.dp),
             singleLine = true,
-            label = { Text(stringResource(R.string.articles_search_article)) },
+            label = { Text(stringResource(R.string.categories_search_category)) },
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Default.Search,
@@ -60,7 +63,7 @@ fun ArticleScreen() {
                 .fillMaxSize()
         ) {
             items(
-                items = listCategory,
+                items = uiState.value,
                 key = { it -> it.id }
             ) { it ->
                 CategoryListItem(
@@ -74,6 +77,6 @@ fun ArticleScreen() {
 
 @Preview
 @Composable
-fun ArticleScreenPreview() {
-    ArticleScreen()
+fun CategoryScreenPreview() {
+    CategoryScreen()
 }

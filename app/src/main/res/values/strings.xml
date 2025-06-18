@@ -8,5 +8,5 @@
     <string name="settings_synchronization">Синхронизация</string>
     <string name="settings_language">Язык</string>
     <string name="settings_about_program">О программе</string>
-    <string name="articles_search_article">Найти статью</string>
+    <string name="categories_search_category">Найти статью</string>
 </resources>
