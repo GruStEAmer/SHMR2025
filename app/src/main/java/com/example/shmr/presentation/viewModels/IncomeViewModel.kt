@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.shmr.Account
+import com.example.shmr.StartAccount
 import com.example.shmr.MainApplication
 import com.example.shmr.domain.model.transaction.TransactionResponse
 import com.example.shmr.domain.repository.TransactionRepository
@@ -33,10 +33,10 @@ class IncomeViewModel(
         endDate: String = LocalDate.now().toString(),
     ){
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Default) {
 
             val data = repository.getTransactionByAccountIdWithDate(
-                accountId = Account.ID,
+                accountId = StartAccount.ID,
                 startDate = startDate,
                 endDate = endDate)
             incomeUiState = if(data.isSuccess) {
@@ -44,7 +44,7 @@ class IncomeViewModel(
                 UiState.Success(filteredListIsIncome)
             }
             else
-                UiState.Error(data.exceptionOrNull()!!, data.exceptionOrNull()!!.message!!)
+                UiState.Error(data.exceptionOrNull()!!)
         }
     }
 

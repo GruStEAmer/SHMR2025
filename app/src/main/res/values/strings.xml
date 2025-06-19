@@ -9,4 +9,6 @@
     <string name="settings_language">Язык</string>
     <string name="settings_about_program">О программе</string>
     <string name="categories_search_category">Найти статью</string>
+    <string name="check_currency">Валюта</string>
+    <string name="emoji_money">💰</string>
 </resources>

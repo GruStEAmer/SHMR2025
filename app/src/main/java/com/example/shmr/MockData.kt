@@ -1,7 +1,6 @@
 package com.example.shmr
 
 import com.example.shmr.presentation.model.AccountStateUi
-import com.example.shmr.presentation.model.CategoryUi
 import com.example.shmr.presentation.model.TransactionUi
 
 val listExpensesTransaction = listOf<TransactionUi>(
@@ -21,8 +20,4 @@ val accountExpenses = AccountStateUi(
     "436 558",
     "RUB"
 )
-
-val accountCheck = AccountStateUi(0, "Баланс", "-670 000", "RUB")
-
-val accountCurrency = AccountStateUi(0, "Валюта", "" , "RUB")
 

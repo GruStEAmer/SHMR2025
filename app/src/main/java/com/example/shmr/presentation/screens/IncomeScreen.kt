@@ -30,7 +30,10 @@ fun IncomeScreen() {
     when(uiState){
         is UiState.Loading -> LoadingScreen()
         is UiState.Success -> IncomeScreenUi(uiState.data)
-        is UiState.Error -> ErrorScreen(uiState.message)
+        is UiState.Error -> ErrorScreen(
+            message = uiState.error.message,
+            reloadData = { incomeViewModel.getIncomes() }
+        )
     }
 }
 
