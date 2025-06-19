@@ -22,8 +22,9 @@ class AccountRepositoryImpl(
     }
 
     override suspend fun getAccountById(id: Int): Result<AccountResponse> {
-        val response = accountApiService.getAccountById(id)
         return try {
+            val response = accountApiService.getAccountById(id)
+
             when(response.code()){
                 200 -> Result.success(response.body()!!)
                 else -> Result.failure(Exception("Error ${response.code()}: ${response.body()}"))

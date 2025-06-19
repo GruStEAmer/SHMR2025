@@ -26,13 +26,30 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.shmr.R
+import com.example.shmr.domain.model.category.Category
+import com.example.shmr.presentation.components.ErrorScreen
+import com.example.shmr.presentation.components.LoadingScreen
 import com.example.shmr.presentation.listItems.CategoryListItem
+import com.example.shmr.presentation.state.UiState
 import com.example.shmr.presentation.viewModels.CategoryViewModel
 
 @Composable
-fun CategoryScreen(categoryViewModel: CategoryViewModel = viewModel(factory = CategoryViewModel.Factory)) {
+fun CategoryScreen() {
+    val categoryViewModel: CategoryViewModel = viewModel(factory = CategoryViewModel.Factory)
+    val uiState = categoryViewModel.categoryUiState
 
-    val uiState = categoryViewModel.uiState
+    when(uiState) {
+        is UiState.Loading -> LoadingScreen()
+        is UiState.Success -> CategoryScreenUi(uiState.data)
+        is UiState.Error -> ErrorScreen(
+            message = uiState.error.message,
+            reloadData = { categoryViewModel.getCategories() }
+        )
+    }
+}
+
+@Composable
+fun CategoryScreenUi(categories: List<Category>){
     var value by rememberSaveable { mutableStateOf("") }
 
     Column(
@@ -63,7 +80,7 @@ fun CategoryScreen(categoryViewModel: CategoryViewModel = viewModel(factory = Ca
                 .fillMaxSize()
         ) {
             items(
-                items = uiState.value,
+                items = categories,
                 key = { it -> it.id }
             ) { it ->
                 CategoryListItem(

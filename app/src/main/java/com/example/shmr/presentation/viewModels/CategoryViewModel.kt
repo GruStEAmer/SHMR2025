@@ -1,5 +1,8 @@
 package com.example.shmr.presentation.viewModels
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -9,26 +12,27 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.shmr.MainApplication
 import com.example.shmr.domain.model.category.Category
 import com.example.shmr.domain.repository.CategoryRepository
+import com.example.shmr.presentation.state.UiState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class CategoryViewModel(
     val repository: CategoryRepository
 ): ViewModel() {
 
-    private val _uiState = MutableStateFlow<List<Category>>(listOf())
-    val uiState = _uiState.asStateFlow()
-
+    var categoryUiState: UiState<List<Category>> by mutableStateOf(UiState.Loading)
+        private set
     init {
         getCategories()
     }
 
     fun getCategories(){
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Default) {
             val data = repository.getCategories()
-            _uiState.value = data
+            if(data.isSuccess)
+                categoryUiState = UiState.Success(data.getOrNull()!!)
+            else
+                categoryUiState = UiState.Error(data.exceptionOrNull()!!)
         }
     }
 
