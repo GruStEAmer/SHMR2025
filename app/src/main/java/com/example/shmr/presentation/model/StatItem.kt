@@ -1,4 +1,4 @@
-package com.example.shmr.domain.model.stats
+package com.example.shmr.presentation.model
 
 import kotlinx.serialization.Serializable
 

@@ -1,8 +1,7 @@
 package com.example.shmr.domain.model.account
 
-import com.example.shmr.domain.model.stats.StatItem
+import com.example.shmr.presentation.model.StatItem
 import kotlinx.serialization.Serializable
-import java.time.LocalDateTime
 
 @Serializable
 data class AccountResponse(

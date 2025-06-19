@@ -47,12 +47,12 @@ fun ExpensesScreen() {
                     key = { it -> it.id }
                 ) {
                     TransactionListItem(
-                        name = it.name,
-                        emoji = it.emoji,
                         categoryId = it.categoryId,
+                        categoryName = it.name,
+                        emoji = it.emoji,
                         amount = it.amount,
                         comment = it.comment,
-                        accountExpenses.currency
+                        currency = accountExpenses.currency
                     )
                 }
             }

@@ -29,11 +29,23 @@ class TransactionRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getTransactionByAccountId(
+    override suspend fun getTransactionByAccountIdWithDate(
         accountId: Int,
         startDate: String,
         endDate: String
     ): Result<List<TransactionResponse>> {
-        TODO("Not yet implemented")
+        return try {
+            val response = transactionApiService.getTransactionsByAccountIdWithDate(
+                accountId = accountId,
+                startDate = startDate,
+                endDate = endDate
+            )
+            when(response.code()){
+                200 -> Result.success(response.body()!!)
+                else -> Result.failure(Exception("Network Transaction Error ${response.code()}: ${response.body()}"))
+            }
+        } catch(e : Exception){
+            Result.failure(Exception("Transaction Error $e"))
+        }
     }
 }

@@ -13,7 +13,7 @@ interface TransactionRepository {
 
     suspend fun deleteTransactionById(id: Int) : Result<Unit>
 
-    suspend fun getTransactionByAccountId(
+    suspend fun getTransactionByAccountIdWithDate(
         accountId: Int,
         startDate:  String,
         endDate: String

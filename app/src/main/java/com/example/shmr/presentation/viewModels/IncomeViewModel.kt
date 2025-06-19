@@ -1,0 +1,61 @@
+package com.example.shmr.presentation.viewModels
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.shmr.Account
+import com.example.shmr.MainApplication
+import com.example.shmr.domain.model.transaction.TransactionResponse
+import com.example.shmr.domain.repository.TransactionRepository
+import com.example.shmr.presentation.state.UiState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.time.LocalDate
+
+class IncomeViewModel(
+    val repository: TransactionRepository
+): ViewModel() {
+
+    var incomeUiState: UiState<List<TransactionResponse>> by mutableStateOf(UiState.Loading)
+        private set
+
+    init {
+        getIncomes()
+    }
+
+    fun getIncomes(
+        startDate: String = LocalDate.now().toString(),
+        endDate: String = LocalDate.now().toString(),
+    ){
+
+        viewModelScope.launch(Dispatchers.IO) {
+
+            val data = repository.getTransactionByAccountIdWithDate(
+                accountId = Account.ID,
+                startDate = startDate,
+                endDate = endDate)
+            incomeUiState = if(data.isSuccess) {
+                val filteredListIsIncome = data.getOrNull()!!.filter { it.category.isIncome }
+                UiState.Success(filteredListIsIncome)
+            }
+            else
+                UiState.Error(data.exceptionOrNull()!!, data.exceptionOrNull()!!.message!!)
+        }
+    }
+
+
+    companion object{
+        val Factory = viewModelFactory {
+            initializer {
+                val application = (this[APPLICATION_KEY]) as MainApplication
+                val repository = application.container.transactionRepository
+                IncomeViewModel(repository = repository)
+            }
+        }
+    }
+}

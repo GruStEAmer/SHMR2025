@@ -25,8 +25,8 @@ interface TransactionApiService {
     @DELETE
     suspend fun deleteTransactionById(@Path("id") id: Int): Response<Unit>
 
-    @GET("transaction/account/{accountId}/period")
-    suspend fun getTransactionsByAccountId(
+    @GET("transactions/account/{accountId}/period")
+    suspend fun getTransactionsByAccountIdWithDate(
         @Path("accountId") accountId:Int,
         @Query("startDate") startDate: String,
         @Query("endDate") endDate: String

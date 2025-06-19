@@ -12,12 +12,12 @@ interface AccountRepository {
 
     suspend fun postAccount(accountUpdateRequest: AccountUpdateRequest): Result<Account>
 
-    suspend fun getAccountById(id: Integer): Result<AccountResponse>
+    suspend fun getAccountById(id: Int): Result<AccountResponse>
 
-    suspend fun putAccountById(id: Integer, accountCreateRequest: AccountCreateRequest) : Result<Account>
+    suspend fun putAccountById(id: Int, accountCreateRequest: AccountCreateRequest) : Result<Account>
 
-    suspend fun deleteAccountById(id: Integer): Result<Unit>
+    suspend fun deleteAccountById(id: Int): Result<Unit>
 
-    suspend fun getAccountHistoryById(id: Integer): Result<AccountHistoryResponse>
+    suspend fun getAccountHistoryById(id: Int): Result<AccountHistoryResponse>
 }
 

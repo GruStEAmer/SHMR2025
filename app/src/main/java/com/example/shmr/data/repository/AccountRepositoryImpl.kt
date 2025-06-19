@@ -11,41 +11,40 @@ import com.example.shmr.domain.repository.AccountRepository
 class AccountRepositoryImpl(
     private val accountApiService: AccountApiService
 ): AccountRepository {
+
     override suspend fun getAccounts(): Result<List<Account>> {
-        return try{
-            val response = accountApiService.getAccounts()
-
-            when {
-                response.isSuccessful -> Result.success(response.body()!!)
-                response.code() == 401 -> Result.failure(Exception("Неавторизированный доступ"))
-                else -> Result.failure(Exception("Ошибка сервера: ${response.code()}"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+        TODO("Not yet implemented")
     }
-
 
     override suspend fun postAccount(accountUpdateRequest: AccountUpdateRequest): Result<Account> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getAccountById(id: Integer): Result<AccountResponse> {
-        TODO("Not yet implemented")
+    override suspend fun getAccountById(id: Int): Result<AccountResponse> {
+        val response = accountApiService.getAccountById(id)
+        return try {
+            when(response.code()){
+                200 -> Result.success(response.body()!!)
+                else -> Result.failure(Exception("Error ${response.code()}: ${response.body()}"))
+            }
+        } catch (e: Exception){
+            Result.failure(Exception("Error: ${e.message}"))
+        }
+
     }
 
     override suspend fun putAccountById(
-        id: Integer,
+        id: Int,
         accountCreateRequest: AccountCreateRequest
     ): Result<Account> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun deleteAccountById(id: Integer): Result<Unit> {
+    override suspend fun deleteAccountById(id: Int): Result<Unit> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getAccountHistoryById(id: Integer): Result<AccountHistoryResponse> {
+    override suspend fun getAccountHistoryById(id: Int): Result<AccountHistoryResponse> {
         TODO("Not yet implemented")
     }
 }

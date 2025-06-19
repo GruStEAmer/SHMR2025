@@ -22,12 +22,12 @@ import com.example.shmr.presentation.theme.LightGreen
 
 @Composable
 fun TransactionListItem(
-    name: String,
-    emoji: String?,
     categoryId: Int,
+    categoryName: String,
+    emoji: String?,
     amount: String,
-    comment: String?,
-    currency: String
+    currency: String,
+    comment: String? = null
 ) {
     val cur = when(currency) {
         "RUB" -> "₽"
@@ -42,7 +42,7 @@ fun TransactionListItem(
                 horizontalArrangement = Arrangement.SpaceBetween
             ){
                 Text(
-                    text = name,
+                    text = categoryName,
                     fontSize = 16.sp
                 )
                 Text(
