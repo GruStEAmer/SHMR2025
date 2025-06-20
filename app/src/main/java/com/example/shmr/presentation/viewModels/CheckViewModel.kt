@@ -17,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CheckViewModel(
-    val repository: AccountRepository
+    private val repository: AccountRepository
 ): ViewModel() {
 
     var checkUiState: UiState<AccountResponse> by mutableStateOf(UiState.Loading)
@@ -28,7 +28,7 @@ class CheckViewModel(
     }
 
     fun getAccountInfo(){
-        viewModelScope.launch(Dispatchers.Default){
+        viewModelScope.launch(Dispatchers.IO){
             checkUiState = UiState.Loading
 
             val data = repository.getAccountById(StartAccount.ID)

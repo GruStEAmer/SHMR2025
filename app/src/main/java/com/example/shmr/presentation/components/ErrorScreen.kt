@@ -11,26 +11,36 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.shmr.presentation.theme.Green
 
 @Composable
 fun ErrorScreen(
     message: String?,
     reloadData: () -> Unit
 ){
+    var reloadCount by rememberSaveable { mutableIntStateOf(0) }
 
     val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(message) {
-        snackBarHostState.showSnackbar(
-            message = message ?: "",
-            duration = SnackbarDuration.Short
-        )
-        reloadData()
+        if(reloadCount < 3){
+            snackBarHostState.showSnackbar(
+                message = message ?: "",
+                duration = SnackbarDuration.Short
+            )
+            reloadData()
+            reloadCount++
+        }
     }
 
     Box(
@@ -44,8 +54,8 @@ fun ErrorScreen(
             snackbar = { snackBarData ->
                 Snackbar(
                     shape = RoundedCornerShape(8.dp),
-                    containerColor = Color(0xFF333333),
-                    contentColor = Color.White
+                    containerColor = Green,
+                    contentColor = Color.Black
                 ) {
                     Text("Error: ${snackBarData.visuals.message}")
                 }

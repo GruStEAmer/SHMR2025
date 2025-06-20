@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.shmr.StartAccount
 import com.example.shmr.MainApplication
+import com.example.shmr.StartAccount
 import com.example.shmr.domain.model.transaction.TransactionResponse
 import com.example.shmr.domain.repository.TransactionRepository
 import com.example.shmr.presentation.state.UiState
@@ -17,44 +17,42 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class IncomeViewModel(
-    private val repository: TransactionRepository
+class ExpensesViewModel(
+    val repository: TransactionRepository
 ): ViewModel() {
 
-    var incomeUiState: UiState<List<TransactionResponse>> by mutableStateOf(UiState.Loading)
+    var expensesUiState: UiState<List<TransactionResponse>> by mutableStateOf(UiState.Loading)
         private set
 
     init {
-        getIncomes()
+        getTransactions()
     }
 
-    fun getIncomes(
-        startDate: String = LocalDate.now().toString(),
-        endDate: String = LocalDate.now().toString(),
-    ){
-
-        viewModelScope.launch(Dispatchers.IO) {
+    fun getTransactions(
+        startDate:String  = LocalDate.now().toString(),
+        endDate: String = LocalDate.now().toString()
+    ) {
+        viewModelScope.launch(Dispatchers.IO){
+            expensesUiState = UiState.Loading
 
             val data = repository.getTransactionByAccountIdWithDate(
                 accountId = StartAccount.ID,
                 startDate = startDate,
-                endDate = endDate)
-            incomeUiState = if(data.isSuccess) {
-                val filteredListIsIncome = data.getOrNull()!!.filter { it.category.isIncome }
-                UiState.Success(filteredListIsIncome)
-            }
+                endDate = endDate
+            )
+            expensesUiState = if(data.isSuccess)
+                UiState.Success(data.getOrNull()!!.filter { !it.category.isIncome })
             else
                 UiState.Error(data.exceptionOrNull()!!)
         }
     }
 
-
-    companion object{
+    companion object {
         val Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY]) as MainApplication
                 val repository = application.container.transactionRepository
-                IncomeViewModel(repository = repository)
+                ExpensesViewModel(repository = repository)
             }
         }
     }

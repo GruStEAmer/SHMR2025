@@ -17,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CategoryViewModel(
-    val repository: CategoryRepository
+    private val repository: CategoryRepository
 ): ViewModel() {
 
     var categoryUiState: UiState<List<Category>> by mutableStateOf(UiState.Loading)
@@ -27,7 +27,7 @@ class CategoryViewModel(
     }
 
     fun getCategories(){
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             val data = repository.getCategories()
             if(data.isSuccess)
                 categoryUiState = UiState.Success(data.getOrNull()!!)

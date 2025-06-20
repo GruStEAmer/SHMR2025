@@ -12,15 +12,35 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.shmr.accountExpenses
-import com.example.shmr.listExpensesTransaction
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.shmr.StartAccount
+import com.example.shmr.domain.model.transaction.TransactionResponse
 import com.example.shmr.presentation.components.CircleButton
+import com.example.shmr.presentation.components.ErrorScreen
+import com.example.shmr.presentation.components.LoadingScreen
 import com.example.shmr.presentation.listItems.AccountListItem
 import com.example.shmr.presentation.listItems.TransactionListItem
+import com.example.shmr.presentation.state.UiState
+import com.example.shmr.presentation.viewModels.ExpensesViewModel
 
 
 @Composable
 fun ExpensesScreen() {
+    val expensesViewModel: ExpensesViewModel = viewModel(factory = ExpensesViewModel.Factory)
+    val uiState = expensesViewModel.expensesUiState
+
+    when(uiState){
+        is UiState.Loading -> LoadingScreen()
+        is UiState.Success -> ExpensesScreenUi(uiState.data)
+        is UiState.Error -> ErrorScreen(
+            message = uiState.error.message,
+            reloadData = { expensesViewModel.getTransactions() }
+        )
+    }
+}
+
+@Composable()
+fun ExpensesScreenUi(transactions: List<TransactionResponse>) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -31,9 +51,9 @@ fun ExpensesScreen() {
                 .background(MaterialTheme.colorScheme.background)
         ) {
             AccountListItem(
-                accountExpenses.name,
-                accountExpenses.balance,
-                accountExpenses.currency
+                "Всего",
+                "0",
+                StartAccount.CURRENCY
             )
 
             HorizontalDivider()
@@ -43,16 +63,16 @@ fun ExpensesScreen() {
                     .fillMaxSize()
             ) {
                 items(
-                    items = listExpensesTransaction,
+                    items = transactions,
                     key = { it -> it.id }
                 ) {
                     TransactionListItem(
-                        categoryId = it.categoryId,
-                        categoryName = it.name,
-                        emoji = it.emoji,
+                        categoryId = it.category.id,
+                        categoryName = it.category.name,
+                        emoji = it.category.emoji,
                         amount = it.amount,
-                        comment = it.comment,
-                        currency = accountExpenses.currency
+                        currency = it.account.currency,
+                        comment = it.comment
                     )
                 }
             }
