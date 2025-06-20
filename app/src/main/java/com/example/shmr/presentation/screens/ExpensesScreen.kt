@@ -28,10 +28,11 @@ import com.example.shmr.presentation.viewModels.ExpensesViewModel
 fun ExpensesScreen() {
     val expensesViewModel: ExpensesViewModel = viewModel(factory = ExpensesViewModel.Factory)
     val uiState = expensesViewModel.expensesUiState
+    val sumOfTransaction = expensesViewModel.sumExpenses
 
     when(uiState){
         is UiState.Loading -> LoadingScreen()
-        is UiState.Success -> ExpensesScreenUi(uiState.data)
+        is UiState.Success -> ExpensesScreenUi(uiState.data, sumOfTransaction)
         is UiState.Error -> ErrorScreen(
             message = uiState.error.message,
             reloadData = { expensesViewModel.getTransactions() }
@@ -40,7 +41,10 @@ fun ExpensesScreen() {
 }
 
 @Composable()
-fun ExpensesScreenUi(transactions: List<TransactionResponse>) {
+fun ExpensesScreenUi(
+    transactions: List<TransactionResponse>,
+    sum: Double
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -52,7 +56,7 @@ fun ExpensesScreenUi(transactions: List<TransactionResponse>) {
         ) {
             AccountListItem(
                 "Всего",
-                "0",
+                "$sum",
                 StartAccount.CURRENCY
             )
 

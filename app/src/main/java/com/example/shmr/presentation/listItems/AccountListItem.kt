@@ -29,6 +29,7 @@ fun AccountListItem(
     emoji: String? = null
 ) {
     val cur = when(currency) {
+        "₽" -> "₽"
         "RUB" -> "₽"
         "USD" -> "$"
         "EUR" -> "€"

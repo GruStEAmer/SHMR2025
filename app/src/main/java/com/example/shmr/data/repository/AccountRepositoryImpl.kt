@@ -30,9 +30,9 @@ class AccountRepositoryImpl(
                 else -> Result.failure(Exception("Error ${response.code()}: ${response.body()}"))
             }
         } catch (e: UnknownHostException){
+
             Result.failure(Exception("Нет подключение к интернету"))
-        }
-        catch (e: Exception){
+        } catch (e: Exception){
             Result.failure(Exception("${e.message}"))
         }
     }

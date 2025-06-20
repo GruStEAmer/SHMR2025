@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.shmr.StartAccount
 import com.example.shmr.domain.model.transaction.TransactionResponse
 import com.example.shmr.presentation.components.CircleButton
 import com.example.shmr.presentation.components.ErrorScreen
@@ -26,10 +27,11 @@ import com.example.shmr.presentation.viewModels.IncomeViewModel
 fun IncomeScreen() {
     val incomeViewModel: IncomeViewModel = viewModel(factory = IncomeViewModel.Factory)
     val uiState = incomeViewModel.incomeUiState
+    val sumOfTransaction = incomeViewModel.sumIncome
 
     when(uiState){
         is UiState.Loading -> LoadingScreen()
-        is UiState.Success -> IncomeScreenUi(uiState.data)
+        is UiState.Success -> IncomeScreenUi(uiState.data, sumOfTransaction)
         is UiState.Error -> ErrorScreen(
             message = uiState.error.message,
             reloadData = { incomeViewModel.getIncomes() }
@@ -38,7 +40,10 @@ fun IncomeScreen() {
 }
 
 @Composable
-fun IncomeScreenUi(transactions: List<TransactionResponse>){
+fun IncomeScreenUi(
+    transactions: List<TransactionResponse>,
+    sum: Double
+){
 
     Box(
         modifier = Modifier
@@ -51,8 +56,8 @@ fun IncomeScreenUi(transactions: List<TransactionResponse>){
         ) {
             AccountListItem(
                 "Всего",
-                "0",
-                "Рубль"
+                "$sum",
+                StartAccount.CURRENCY
             )
 
             HorizontalDivider()

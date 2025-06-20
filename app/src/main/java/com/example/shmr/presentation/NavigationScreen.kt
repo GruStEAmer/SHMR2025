@@ -7,8 +7,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -29,10 +31,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.shmr.presentation.model.NavigationModel
+import com.example.shmr.presentation.model.NavigationBottomModel
+import com.example.shmr.presentation.model.NavigationTopModel
 import com.example.shmr.presentation.screens.CategoryScreen
 import com.example.shmr.presentation.screens.CheckScreen
+import com.example.shmr.presentation.screens.ExpensesHistoryScreen
 import com.example.shmr.presentation.screens.ExpensesScreen
+import com.example.shmr.presentation.screens.IncomeHistoryScreen
 import com.example.shmr.presentation.screens.IncomeScreen
 import com.example.shmr.presentation.screens.SettingsScreen
 import com.example.shmr.presentation.theme.Green
@@ -46,27 +51,33 @@ fun NavigationScreen(navController:NavHostController = rememberNavController()) 
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = NavigationModel.Check.route,
+            startDestination = NavigationTopModel.Check.route,
             modifier = Modifier.padding(innerPadding),
             enterTransition = { fadeIn(tween(700)) },
             exitTransition = { fadeOut(tween(700)) },
             popEnterTransition = { fadeIn(tween(700)) },
             popExitTransition = { fadeOut(tween(700)) },
         ) {
-            composable(route = NavigationModel.Settings.route) {
+            composable(route = NavigationTopModel.Settings.route) {
                 SettingsScreen()
             }
-            composable(route = NavigationModel.Check.route){
+            composable(route = NavigationTopModel.Check.route){
                 CheckScreen()
             }
-            composable(route = NavigationModel.Income.route){
+            composable(route = NavigationTopModel.Income.route){
                 IncomeScreen()
             }
-            composable(route = NavigationModel.Expenses.route) {
+            composable(route = NavigationTopModel.Expenses.route) {
                 ExpensesScreen()
             }
-            composable(route = NavigationModel.Categories.route){
+            composable(route = NavigationTopModel.Categories.route){
                 CategoryScreen()
+            }
+            composable(route = NavigationTopModel.IncomeHistory.route){
+                IncomeHistoryScreen()
+            }
+            composable(route = NavigationTopModel.ExpensesHistory.route){
+                ExpensesHistoryScreen()
             }
         }
     }
@@ -76,11 +87,10 @@ fun NavigationScreen(navController:NavHostController = rememberNavController()) 
 fun AppBottomBar(
     navController: NavHostController
 ) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+    val currentRoute = currentRoute(navController)
 
     NavigationBar {
-        NavigationModel.navItems.forEach { item ->
+        NavigationBottomModel.navItems.forEach { item ->
             NavigationBarItem(
                 selected = currentRoute == item.route,
                 onClick = { navController.navigate(item.route){
@@ -110,40 +120,48 @@ fun AppBottomBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar(navController: NavHostController) {
+
     val currentRoute = currentRoute(navController)
-    
-    var titleTop = "Undefined"
-    var iconTopBar:Int? = null
-    NavigationModel.navItems.forEach {
-        if(it.route == currentRoute) {
-            titleTop = it.title
-            iconTopBar = it.iconTopBar
-        }
-    }
-    TopAppBar(
+
+    var topBar = NavigationTopModel.navItems.firstOrNull() { it.route == currentRoute }
+    if(topBar == null) topBar = NavigationTopModel.Check
+
+    CenterAlignedTopAppBar(
         title = {
-            Box(
-                modifier = Modifier.fillMaxWidth()
-            ){
-                Text(
-                    text = titleTop,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                )
-                iconTopBar?.let {
+            Text(
+                text = topBar.title,
+            )
+        },
+        modifier = Modifier.fillMaxWidth(),
+        navigationIcon = {
+            topBar.startIcon?.let{
+                IconButton(
+                    onClick = { navController.popBackStack() },
+                ) {
                     Icon(
-                        painter = painterResource(iconTopBar),
+                        painter = painterResource(topBar.startIcon),
                         contentDescription = "",
-                        modifier = Modifier
-                            .align(Alignment.CenterEnd)
-                            .padding(end = 16.dp)
-                            .clickable{},
                         tint = Color.Unspecified
                     )
                 }
             }
-                },
-        modifier = Modifier.fillMaxWidth(),
+        },
+        actions = {
+            topBar.endIcon?.let {
+                IconButton(
+                    onClick = {
+                        topBar.endRoute?.let {
+                            navController.navigate(topBar.endRoute)
+                        }
+                    }
+                ) {
+                    Icon(
+                        painter = painterResource(topBar.endIcon),
+                        contentDescription = "",
+                    )
+                }
+            }
+        },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Green,
         )

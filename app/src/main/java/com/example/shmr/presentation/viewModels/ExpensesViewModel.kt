@@ -1,6 +1,8 @@
 package com.example.shmr.presentation.viewModels
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -23,27 +25,33 @@ class ExpensesViewModel(
 
     var expensesUiState: UiState<List<TransactionResponse>> by mutableStateOf(UiState.Loading)
         private set
+    var sumExpenses by mutableDoubleStateOf(0.0)
+        private set
 
     init {
         getTransactions()
     }
 
     fun getTransactions(
-        startDate:String  = LocalDate.now().toString(),
-        endDate: String = LocalDate.now().toString()
+        startDate: LocalDate  = LocalDate.now(),
+        endDate: LocalDate = LocalDate.now()
     ) {
         viewModelScope.launch(Dispatchers.IO){
             expensesUiState = UiState.Loading
+            sumExpenses = 0.0
 
             val data = repository.getTransactionByAccountIdWithDate(
                 accountId = StartAccount.ID,
-                startDate = startDate,
-                endDate = endDate
+                startDate = startDate.toString(),
+                endDate = endDate.toString()
             )
-            expensesUiState = if(data.isSuccess)
-                UiState.Success(data.getOrNull()!!.filter { !it.category.isIncome })
+            if(data.isSuccess)   {
+                val transaction = data.getOrNull()!!.filter { !it.category.isIncome }
+                expensesUiState = UiState.Success(transaction)
+                sumExpenses = transaction.sumOf { it.amount.toDouble() }
+            }
             else
-                UiState.Error(data.exceptionOrNull()!!)
+                expensesUiState = UiState.Error(data.exceptionOrNull()!!)
         }
     }
 

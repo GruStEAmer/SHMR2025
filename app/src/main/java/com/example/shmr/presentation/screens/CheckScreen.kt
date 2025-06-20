@@ -24,7 +24,6 @@ import com.example.shmr.presentation.viewModels.CheckViewModel.Companion.Factory
 fun CheckScreen() {
     val checkViewModel: CheckViewModel = viewModel(factory = Factory)
     val uiState:UiState<AccountResponse> = checkViewModel.checkUiState
-
     when(uiState){
         is UiState.Loading -> LoadingScreen()
         is UiState.Success -> CheckScreenUi(uiState.data)

@@ -1,6 +1,8 @@
 package com.example.shmr.presentation.viewModels
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -23,25 +25,28 @@ class IncomeViewModel(
 
     var incomeUiState: UiState<List<TransactionResponse>> by mutableStateOf(UiState.Loading)
         private set
+    var sumIncome by mutableDoubleStateOf(0.0)
 
     init {
         getIncomes()
     }
 
     fun getIncomes(
-        startDate: String = LocalDate.now().toString(),
-        endDate: String = LocalDate.now().toString(),
+        startDate: LocalDate = LocalDate.now(),
+        endDate: LocalDate = LocalDate.now(),
     ){
 
         viewModelScope.launch(Dispatchers.IO) {
-
+            sumIncome = 0.0
             val data = repository.getTransactionByAccountIdWithDate(
                 accountId = StartAccount.ID,
-                startDate = startDate,
-                endDate = endDate)
-            incomeUiState = if(data.isSuccess) {
+                startDate = startDate.toString(),
+                endDate = endDate.toString()
+            )
+            if(data.isSuccess) {
                 val filteredListIsIncome = data.getOrNull()!!.filter { it.category.isIncome }
-                UiState.Success(filteredListIsIncome)
+                incomeUiState = UiState.Success(filteredListIsIncome)
+                sumIncome = filteredListIsIncome.sumOf { it.amount.toDouble() }
             }
             else
                 UiState.Error(data.exceptionOrNull()!!)
