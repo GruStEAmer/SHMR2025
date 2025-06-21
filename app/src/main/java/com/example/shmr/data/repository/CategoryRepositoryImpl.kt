@@ -1,6 +1,5 @@
 package com.example.shmr.data.repository
 
-import android.util.Log
 import com.example.shmr.data.remote.api.CategoryApiService
 import com.example.shmr.domain.model.category.Category
 import com.example.shmr.domain.repository.CategoryRepository

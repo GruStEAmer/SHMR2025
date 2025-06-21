@@ -49,7 +49,7 @@ class IncomeViewModel(
                 sumIncome = filteredListIsIncome.sumOf { it.amount.toDouble() }
             }
             else
-                UiState.Error(data.exceptionOrNull()!!)
+                incomeUiState = UiState.Error(data.exceptionOrNull()!!)
         }
     }
 

@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -28,19 +27,18 @@ fun ErrorScreen(
     message: String?,
     reloadData: () -> Unit
 ){
-    var reloadCount by rememberSaveable { mutableIntStateOf(0) }
-
+    var counter by remember { mutableIntStateOf(0) }
     val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(message) {
-        if(reloadCount < 3){
-            snackBarHostState.showSnackbar(
-                message = message ?: "",
-                duration = SnackbarDuration.Short
-            )
+        snackBarHostState.showSnackbar(
+            message = message ?: "",
+            duration = SnackbarDuration.Short
+        )
+        if(message == "Нет подключение к интернету" || (message == "500" && counter < 3)) {
             reloadData()
-            reloadCount++
         }
+        counter++
     }
 
     Box(
