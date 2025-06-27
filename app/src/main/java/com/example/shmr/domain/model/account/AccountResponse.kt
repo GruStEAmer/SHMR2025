@@ -1,6 +1,6 @@
 package com.example.shmr.domain.model.account
 
-import com.example.shmr.presentation.model.StatItem
+import com.example.shmr.domain.model.statItem.StatItem
 import kotlinx.serialization.Serializable
 
 @Serializable

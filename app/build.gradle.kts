@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,16 +9,33 @@ plugins {
 
 android {
     namespace = "com.example.shmr"
-    compileSdk = 35
+    compileSdk = 36
+
+    buildFeatures{
+        buildConfig = true
+    }
 
     defaultConfig {
         applicationId = "com.example.shmr"
         minSdk = 26
+        //noinspection OldTargetApi
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val keystoreFile = project.rootProject.file("local.properties")
+        val properties = Properties()
+        properties.load(keystoreFile.inputStream())
+
+        val apiToken = properties.getProperty("API_TOKEN") ?: ""
+
+        buildConfigField(
+            type = "String",
+            name = "API_TOKEN",
+            value = apiToken
+        )
     }
 
     buildTypes {
