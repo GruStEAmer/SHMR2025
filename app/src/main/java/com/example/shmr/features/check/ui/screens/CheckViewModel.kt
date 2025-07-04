@@ -14,14 +14,18 @@ import com.example.shmr.core.ui.state.UiState
 import com.example.shmr.domain.model.account.AccountResponse
 import com.example.shmr.domain.repository.AccountRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class CheckViewModel(
     private val repository: AccountRepository
 ): ViewModel() {
 
-    var checkUiState: UiState<AccountResponse> by mutableStateOf(UiState.Loading)
-        private set
+
+    private val _checkUiState = MutableStateFlow<UiState<AccountResponse>>(UiState.Loading)
+    val checkUiState: StateFlow<UiState<AccountResponse>> = _checkUiState.asStateFlow()
 
     init {
         getAccountInfo()
@@ -29,13 +33,13 @@ class CheckViewModel(
 
     fun getAccountInfo(){
         viewModelScope.launch(Dispatchers.IO){
-            checkUiState = UiState.Loading
+            _checkUiState.value = UiState.Loading
 
             val data = repository.getAccountById(StartAccount.ID)
             if(data.isSuccess)
-                checkUiState = UiState.Success(data.getOrNull()!!)
+                _checkUiState.value = UiState.Success(data.getOrNull()!!)
             else
-                checkUiState = UiState.Error(data.exceptionOrNull()!!)
+                _checkUiState.value = UiState.Error(data.exceptionOrNull()!!)
         }
     }
 

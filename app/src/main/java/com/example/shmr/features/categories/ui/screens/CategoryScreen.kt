@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -35,21 +36,28 @@ import com.example.shmr.domain.model.category.Category
 @Composable
 fun CategoryScreen() {
     val categoryViewModel: CategoryViewModel = viewModel(factory = CategoryViewModel.Factory)
-    val uiState = categoryViewModel.categoryUiState
+    val uiState by categoryViewModel.categoryUiState.collectAsState()
+    val targetCategories by categoryViewModel.targetCategoryUiState.collectAsState()
 
-    when(uiState) {
+    when (uiState) {
         is UiState.Loading -> LoadingScreen()
-        is UiState.Success -> CategoryScreenUi(uiState.data)
+        is UiState.Success -> CategoryScreenUi(
+            categories = targetCategories,
+            searchCategories = { query -> categoryViewModel.searchCategory(query) }
+        )
         is UiState.Error -> ErrorScreen(
-            message = uiState.error.message,
+            message = (uiState as UiState.Error).error.message,
             reloadData = { categoryViewModel.getCategories() }
         )
     }
 }
 
 @Composable
-fun CategoryScreenUi(categories: List<Category>){
-    var value by rememberSaveable { mutableStateOf("") }
+fun CategoryScreenUi(
+    categories: List<Category>,
+    searchCategories: (String) -> Unit
+) {
+    var searchValue by rememberSaveable { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -57,8 +65,8 @@ fun CategoryScreenUi(categories: List<Category>){
             .background(MaterialTheme.colorScheme.background)
     ) {
         TextField(
-            value = value,
-            onValueChange = { it-> value = it },
+            value = searchValue,
+            onValueChange = { searchValue = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
@@ -67,24 +75,22 @@ fun CategoryScreenUi(categories: List<Category>){
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Default.Search,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .clickable{}
+                    contentDescription = "Search",
+                    modifier = Modifier.clickable {
+                        searchCategories(searchValue)
+                    }
                 )
             }
         )
         HorizontalDivider()
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(
                 items = categories,
-                key = { it -> it.id }
-            ) { it ->
+                key = { it.id }
+            ) { category ->
                 CategoryListItem(
-                    name = it.name,
-                    emoji = it.emoji
+                    name = category.name,
+                    emoji = category.emoji
                 )
             }
         }

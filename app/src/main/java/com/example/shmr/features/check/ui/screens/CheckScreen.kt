@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,11 +23,11 @@ import com.example.shmr.domain.model.account.AccountResponse
 @Composable
 fun CheckScreen() {
     val checkViewModel: CheckViewModel = viewModel(factory = CheckViewModel.Companion.Factory)
-    val uiState:UiState<AccountResponse> = checkViewModel.checkUiState
+    val uiState:UiState<AccountResponse> by checkViewModel.checkUiState.collectAsState()
     when(uiState){
         is UiState.Loading -> LoadingScreen()
-        is UiState.Success -> CheckScreenUi(uiState.data)
-        is UiState.Error -> ErrorScreen(message =  uiState.error.message, reloadData = { checkViewModel.getAccountInfo() })
+        is UiState.Success -> CheckScreenUi((uiState as UiState.Success<AccountResponse>).data)
+        is UiState.Error -> ErrorScreen(message =  (uiState as UiState.Error).error.message, reloadData = { checkViewModel.getAccountInfo() })
     }
 }
 
