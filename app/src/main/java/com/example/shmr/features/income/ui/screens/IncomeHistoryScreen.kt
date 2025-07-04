@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,9 +34,8 @@ fun IncomeHistoryScreen(
     navigation: () -> Unit
 ) {
     val incomeViewModel: IncomeViewModel = viewModel(factory = IncomeViewModel.Factory)
-
-    val uiState = incomeViewModel.incomeUiState
-    val sumTransaction = incomeViewModel.sumIncome
+    val uiState by incomeViewModel.incomeUiState.collectAsState()
+    val sumTransaction by incomeViewModel.sumIncome.collectAsState()
 
     var startDate by remember { mutableStateOf(LocalDate.now().withDayOfMonth(1)) }
     var endDate by remember { mutableStateOf(LocalDate.now()) }
@@ -55,7 +55,7 @@ fun IncomeHistoryScreen(
                 startNavigation = navigation
             )
         }
-    ){ innerPadding ->
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -68,14 +68,14 @@ fun IncomeHistoryScreen(
                 changeEndDatePicker = { showEndDatePicker = true },
                 balance = sumTransaction.toString()
             )
+
             when (uiState) {
                 is UiState.Loading -> LoadingScreen()
                 is UiState.Success -> IncomeHistoryScreenUi(
-                    uiState.data,
+                    (uiState as UiState.Success<List<TransactionResponse>>).data,
                 )
-
                 is UiState.Error -> ErrorScreen(
-                    message = uiState.error.message!!,
+                    message = (uiState as UiState.Error).error.message ?: "Unknown error",
                     reloadData = {
                         incomeViewModel.getIncomes(
                             startDate,
@@ -84,35 +84,35 @@ fun IncomeHistoryScreen(
                     }
                 )
             }
+        }
+    }
 
-        }
-        if (showStartDatePicker) {
-            CustomDatePicker(
-                onDateSelected = { timestamp ->
-                    timestamp?.let {
-                        startDate = Instant.ofEpochMilli(it)
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDate()
-                    }
-                    showStartDatePicker = false
-                },
-                onDismiss = { showStartDatePicker = false }
-            )
-        }
+    if (showStartDatePicker) {
+        CustomDatePicker(
+            onDateSelected = { timestamp ->
+                timestamp?.let {
+                    startDate = Instant.ofEpochMilli(it)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                }
+                showStartDatePicker = false
+            },
+            onDismiss = { showStartDatePicker = false }
+        )
+    }
 
-        if (showEndDatePicker) {
-            CustomDatePicker(
-                onDateSelected = { timestamp ->
-                    timestamp?.let {
-                        endDate = Instant.ofEpochMilli(it)
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDate()
-                    }
-                    showEndDatePicker = false
-                },
-                onDismiss = { showEndDatePicker = false }
-            )
-        }
+    if (showEndDatePicker) {
+        CustomDatePicker(
+            onDateSelected = { timestamp ->
+                timestamp?.let {
+                    endDate = Instant.ofEpochMilli(it)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                }
+                showEndDatePicker = false
+            },
+            onDismiss = { showEndDatePicker = false }
+        )
     }
 }
 
@@ -122,7 +122,7 @@ fun IncomeHistoryScreenUi(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize()
-    ){
+    ) {
         items(
             items = transactions,
             key = { it -> it.id }

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -16,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.collectAsState
 import com.example.shmr.R
 import com.example.shmr.StartAccount
 import com.example.shmr.core.ui.components.CustomDatePicker
@@ -30,14 +30,13 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 
-
 @Composable
 fun ExpensesHistoryScreen(
     navigation: () -> Unit
 ) {
     val expensesViewModel: ExpensesViewModel = viewModel(factory = ExpensesViewModel.Factory)
-    val uiState = expensesViewModel.expensesUiState
-    val sumTransaction = expensesViewModel.sumExpenses
+    val uiState by expensesViewModel.expensesUiState.collectAsState()
+    val sumTransaction by expensesViewModel.sumExpenses.collectAsState()
 
     var startDate by remember { mutableStateOf(LocalDate.now().withDayOfMonth(1)) }
     var endDate by remember { mutableStateOf(LocalDate.now()) }
@@ -47,6 +46,7 @@ fun ExpensesHistoryScreen(
     LaunchedEffect(startDate, endDate) {
         expensesViewModel.getTransactions(startDate, endDate)
     }
+
     Scaffold(
         topBar = {
             AppTopBar(
@@ -56,7 +56,7 @@ fun ExpensesHistoryScreen(
                 startNavigation = navigation
             )
         }
-    ){ innerPadding ->
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -69,14 +69,14 @@ fun ExpensesHistoryScreen(
                 changeEndDatePicker = { showEndDatePicker = true },
                 balance = sumTransaction.toString()
             )
+
             when (uiState) {
                 is UiState.Loading -> LoadingScreen()
                 is UiState.Success -> ExpensesHistoryScreenUi(
-                    uiState.data,
+                    (uiState as UiState.Success<List<TransactionResponse>>).data,
                 )
-
                 is UiState.Error -> ErrorScreen(
-                    message = uiState.error.message!!,
+                    message = (uiState as UiState.Error).error.message!!,
                     reloadData = {
                         expensesViewModel.getTransactions(
                             startDate,
@@ -86,33 +86,34 @@ fun ExpensesHistoryScreen(
                 )
             }
         }
-        if (showStartDatePicker) {
-            CustomDatePicker(
-                onDateSelected = { timestamp ->
-                    timestamp?.let {
-                        startDate = Instant.ofEpochMilli(it)
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDate()
-                    }
-                    showStartDatePicker = false
-                },
-                onDismiss = { showStartDatePicker = false }
-            )
-        }
+    }
 
-        if (showEndDatePicker) {
-            CustomDatePicker(
-                onDateSelected = { timestamp ->
-                    timestamp?.let {
-                        endDate = Instant.ofEpochMilli(it)
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDate()
-                    }
-                    showEndDatePicker = false
-                },
-                onDismiss = { showEndDatePicker = false }
-            )
-        }
+    if (showStartDatePicker) {
+        CustomDatePicker(
+            onDateSelected = { timestamp ->
+                timestamp?.let {
+                    startDate = Instant.ofEpochMilli(it)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                }
+                showStartDatePicker = false
+            },
+            onDismiss = { showStartDatePicker = false }
+        )
+    }
+
+    if (showEndDatePicker) {
+        CustomDatePicker(
+            onDateSelected = { timestamp ->
+                timestamp?.let {
+                    endDate = Instant.ofEpochMilli(it)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                }
+                showEndDatePicker = false
+            },
+            onDismiss = { showEndDatePicker = false }
+        )
     }
 }
 
@@ -122,7 +123,7 @@ fun ExpensesHistoryScreenUi(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize()
-    ){
+    ) {
         items(
             items = transactions,
             key = { it -> it.id }

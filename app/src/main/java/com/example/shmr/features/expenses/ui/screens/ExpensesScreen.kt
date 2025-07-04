@@ -1,6 +1,5 @@
 package com.example.shmr.features.expenses.ui.screens
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,9 +11,10 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.shmr.R
 import com.example.shmr.StartAccount
@@ -27,31 +27,29 @@ import com.example.shmr.core.ui.navigationBar.AppTopBar
 import com.example.shmr.core.ui.state.UiState
 import com.example.shmr.domain.model.transaction.TransactionResponse
 
-
 @Composable
 fun ExpensesScreen(
     navigation: () -> Unit
 ) {
     val expensesViewModel: ExpensesViewModel = viewModel(factory = ExpensesViewModel.Factory)
-    val uiState = expensesViewModel.expensesUiState
-    val sumOfTransaction = expensesViewModel.sumExpenses
+    val uiState by expensesViewModel.expensesUiState.collectAsState()
+    val sumOfTransaction by expensesViewModel.sumExpenses.collectAsState()
 
     when (uiState) {
         is UiState.Loading -> LoadingScreen()
         is UiState.Success -> ExpensesScreenUi(
-            transactions = uiState.data,
+            transactions = (uiState as UiState.Success<List<TransactionResponse>>).data,
             sum = sumOfTransaction,
             navigation = navigation
         )
         is UiState.Error -> ErrorScreen(
-            message = uiState.error.message,
+            message = (uiState as UiState.Error).error.message,
             reloadData = { expensesViewModel.getTransactions() }
         )
     }
-
 }
 
-@Composable()
+@Composable
 fun ExpensesScreenUi(
     transactions: List<TransactionResponse>,
     sum: Double,
@@ -65,7 +63,7 @@ fun ExpensesScreenUi(
                 endNavigation = navigation
             )
         }
-    ){ innerPadding ->
+    ) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()

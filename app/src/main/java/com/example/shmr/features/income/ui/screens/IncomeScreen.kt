@@ -11,6 +11,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,18 +33,18 @@ fun IncomeScreen(
     navigation: () -> Unit
 ) {
     val incomeViewModel: IncomeViewModel = viewModel(factory = IncomeViewModel.Factory)
-    val uiState = incomeViewModel.incomeUiState
-    val sumOfTransaction = incomeViewModel.sumIncome
+    val uiState by incomeViewModel.incomeUiState.collectAsState()
+    val sumOfTransaction by incomeViewModel.sumIncome.collectAsState()
 
-    when(uiState){
+    when (uiState) {
         is UiState.Loading -> LoadingScreen()
         is UiState.Success -> IncomeScreenUi(
-            transactions = uiState.data,
+            transactions = (uiState as UiState.Success<List<TransactionResponse>>).data,
             sum = sumOfTransaction,
             navigation = navigation
         )
         is UiState.Error -> ErrorScreen(
-            message = uiState.error.message,
+            message = (uiState as UiState.Error).error.message ?: "Unknown error",
             reloadData = { incomeViewModel.getIncomes() }
         )
     }
@@ -53,8 +55,7 @@ fun IncomeScreenUi(
     transactions: List<TransactionResponse>,
     sum: Double,
     navigation: () -> Unit
-){
-
+) {
     Scaffold(
         topBar = {
             AppTopBar(
@@ -63,7 +64,7 @@ fun IncomeScreenUi(
                 endNavigation = navigation
             )
         }
-    ){ innerPadding ->
+    ) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -81,6 +82,7 @@ fun IncomeScreenUi(
                 )
 
                 HorizontalDivider()
+
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -108,5 +110,5 @@ fun IncomeScreenUi(
 @Preview
 @Composable
 fun IncomeScreenPreview() {
-    IncomeScreen( {} )
+    IncomeScreen {}
 }
