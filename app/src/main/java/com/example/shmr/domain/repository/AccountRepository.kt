@@ -14,7 +14,7 @@ interface AccountRepository {
 
     suspend fun getAccountById(id: Int): Result<AccountResponse>
 
-    suspend fun putAccountById(id: Int, accountCreateRequest: AccountCreateRequest) : Result<Account>
+    suspend fun putAccountById(id: Int, accountCreateRequest: AccountCreateRequest) : Result<AccountResponse>
 
     suspend fun deleteAccountById(id: Int): Result<Unit>
 

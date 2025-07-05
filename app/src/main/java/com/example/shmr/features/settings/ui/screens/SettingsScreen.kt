@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -23,20 +25,30 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.shmr.R
 import com.example.shmr.core.ui.components.listItems.SettingListItem
+import com.example.shmr.core.ui.navigationBar.AppTopBar
 import com.example.shmr.core.ui.theme.Green
 import com.example.shmr.core.ui.theme.LightGreen
 
 @Composable
 fun SettingsScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ){
-        ChangeThemeItem()
-        HorizontalDivider()
-        listSettings.forEach {
-            SettingListItem(it)
+    Scaffold(
+        topBar = {
+            AppTopBar(
+                title = "Настройки",
+            )
+        }
+    ){ innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(innerPadding)
+        ) {
+            ChangeThemeItem()
+            HorizontalDivider()
+            listSettings.forEach {
+                SettingListItem(it)
+            }
         }
     }
 }
