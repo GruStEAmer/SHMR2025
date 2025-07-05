@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,10 +13,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.shmr.app.navigation.model.NavigationBottomModel
 import com.example.shmr.features.categories.ui.screens.CategoryScreen
-import com.example.shmr.features.check.ui.screens.CheckScreen
+import com.example.shmr.features.check.navigation.CheckNavigationScreen
 import com.example.shmr.features.expenses.navigation.ExpensesNavigationScreen
 import com.example.shmr.features.income.navigation.IncomeNavigationScreen
-import com.example.shmr.features.income.ui.screens.IncomeScreen
 import com.example.shmr.features.settings.ui.screens.SettingsScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -39,7 +37,7 @@ fun NavigationScreen(navController:NavHostController = rememberNavController()) 
                 SettingsScreen()
             }
             composable(route = NavigationBottomModel.CheckNavigation.route) {
-                CheckScreen()
+                CheckNavigationScreen()
             }
             composable(route = NavigationBottomModel.IncomeNavigation.route) {
                 IncomeNavigationScreen()
@@ -47,7 +45,7 @@ fun NavigationScreen(navController:NavHostController = rememberNavController()) 
             composable(route = NavigationBottomModel.ExpensesNavigation.route) {
                 ExpensesNavigationScreen()
             }
-            composable(route = NavigationBottomModel.Categories.route) {
+            composable(route = NavigationBottomModel.CategoriesNavigation.route) {
                 CategoryScreen()
             }
         }

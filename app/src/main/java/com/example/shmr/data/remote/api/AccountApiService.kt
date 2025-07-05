@@ -24,7 +24,7 @@ interface AccountApiService {
     suspend fun getAccountById(@Path("id") id: Int): Response<AccountResponse>
 
     @PUT("accounts/{id}")
-    suspend fun putAccountById(@Path("id") id: Int, @Body accountCreateRequest: AccountCreateRequest)
+    suspend fun putAccountById(@Path("id") id: Int, @Body accountCreateRequest: AccountCreateRequest): Response<AccountResponse>
 
     @DELETE("accounts/{id}")
     suspend fun deleteAccountById(@Path("id") id: Int): Response<Unit>

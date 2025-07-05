@@ -9,6 +9,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,23 +27,32 @@ import com.example.shmr.core.ui.state.UiState
 import com.example.shmr.domain.model.account.AccountResponse
 
 @Composable
-fun CheckScreen() {
-    val checkViewModel: CheckViewModel = viewModel(factory = CheckViewModel.Companion.Factory)
+fun CheckScreen(
+    navigation: () -> Unit,
+    checkViewModel: CheckViewModel = viewModel(factory = CheckViewModel.Companion.Factory)
+) {
     val uiState:UiState<AccountResponse> by checkViewModel.checkUiState.collectAsState()
     when(uiState){
         is UiState.Loading -> LoadingScreen()
-        is UiState.Success -> CheckScreenUi((uiState as UiState.Success<AccountResponse>).data)
+        is UiState.Success -> CheckScreenUi(
+            account = (uiState as UiState.Success<AccountResponse>).data,
+            navigation = navigation
+        )
         is UiState.Error -> ErrorScreen(message =  (uiState as UiState.Error).error.message, reloadData = { checkViewModel.getAccountInfo() })
     }
 }
 
 @Composable
-fun CheckScreenUi(account: AccountResponse) {
+fun CheckScreenUi(
+    account: AccountResponse,
+    navigation: () -> Unit
+) {
     Scaffold(
         topBar = {
             AppTopBar(
                 title = "Мой счет",
-                endIcon = R.drawable.ic_edit
+                endIcon = R.drawable.ic_edit,
+                endNavigation = navigation
             )
         }
     ){ innerPadding ->
@@ -74,5 +86,5 @@ fun CheckScreenUi(account: AccountResponse) {
 @Preview
 @Composable
 fun CheckScreenPreview(){
-    CheckScreen()
+    CheckScreen( {} )
 }

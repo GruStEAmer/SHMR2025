@@ -4,4 +4,6 @@ sealed class CheckNavigationModel(
     val route: String
 ) {
     data object Check: CheckNavigationModel(route = "check")
+
+    data object CheckEdit: CheckNavigationModel(route = "check/edit")
 }

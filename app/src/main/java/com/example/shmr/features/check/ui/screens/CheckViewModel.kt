@@ -11,6 +11,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.shmr.MainApplication
 import com.example.shmr.StartAccount
 import com.example.shmr.core.ui.state.UiState
+import com.example.shmr.domain.model.account.Account
+import com.example.shmr.domain.model.account.AccountCreateRequest
 import com.example.shmr.domain.model.account.AccountResponse
 import com.example.shmr.domain.repository.AccountRepository
 import kotlinx.coroutines.Dispatchers
@@ -21,8 +23,7 @@ import kotlinx.coroutines.launch
 
 class CheckViewModel(
     private val repository: AccountRepository
-): ViewModel() {
-
+) : ViewModel() {
 
     private val _checkUiState = MutableStateFlow<UiState<AccountResponse>>(UiState.Loading)
     val checkUiState: StateFlow<UiState<AccountResponse>> = _checkUiState.asStateFlow()
@@ -31,19 +32,33 @@ class CheckViewModel(
         getAccountInfo()
     }
 
-    fun getAccountInfo(){
-        viewModelScope.launch(Dispatchers.IO){
+    fun getAccountInfo() {
+        viewModelScope.launch(Dispatchers.IO) {
             _checkUiState.value = UiState.Loading
-
             val data = repository.getAccountById(StartAccount.ID)
-            if(data.isSuccess)
+            if (data.isSuccess) {
                 _checkUiState.value = UiState.Success(data.getOrNull()!!)
-            else
+            } else {
                 _checkUiState.value = UiState.Error(data.exceptionOrNull()!!)
+            }
         }
     }
 
-    companion object{
+    fun putAccount(name: String, balance: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _checkUiState.value = UiState.Loading
+            val accountRequest = AccountCreateRequest(name, balance, StartAccount.CURRENCY)
+            val data = repository.putAccountById(StartAccount.ID, accountRequest)
+
+            if (data.isSuccess) {
+                _checkUiState.value = UiState.Success(data.getOrNull()!!)
+            } else {
+                _checkUiState.value = UiState.Error(data.exceptionOrNull()!!)
+            }
+        }
+    }
+
+    companion object {
         val Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as MainApplication)
