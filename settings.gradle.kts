@@ -21,3 +21,12 @@ dependencyResolutionManagement {
 
 rootProject.name = "SHMR"
 include(":app")
+include(":features")
+include(":features:settings")
+include(":features:income")
+include(":features:expenses")
+include(":features:categories")
+include(":features:check")
+include(":core")
+include(":core:network")
+include(":core:ui")

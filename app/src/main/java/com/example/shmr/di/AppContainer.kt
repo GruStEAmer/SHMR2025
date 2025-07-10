@@ -1,4 +1,4 @@
-package com.example.shmr.app.di
+package com.example.shmr.di
 
 import com.example.shmr.BuildConfig
 import com.example.shmr.data.remote.api.AccountApiService

@@ -1,4 +1,4 @@
-package com.example.shmr.app.navigation.screens
+package com.example.shmr.navigation.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.tween
@@ -11,8 +11,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.shmr.app.navigation.model.NavigationBottomModel
-import com.example.shmr.features.categories.ui.screens.CategoryScreen
+import com.example.categories.ui.screens.CategoryScreen
+import com.example.shmr.navigation.model.NavigationBottomModel
 import com.example.shmr.features.check.navigation.CheckNavigationScreen
 import com.example.shmr.features.expenses.navigation.ExpensesNavigationScreen
 import com.example.shmr.features.income.navigation.IncomeNavigationScreen

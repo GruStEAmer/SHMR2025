@@ -1,6 +1,5 @@
-package com.example.shmr.app.navigation.screens
+package com.example.shmr.navigation.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -8,13 +7,12 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.shmr.app.navigation.model.NavigationBottomModel
+import com.example.shmr.navigation.model.NavigationBottomModel
 import com.example.shmr.core.ui.theme.Green
 import com.example.shmr.core.ui.theme.LightGreen
 

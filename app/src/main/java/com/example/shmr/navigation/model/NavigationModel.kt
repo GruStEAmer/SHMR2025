@@ -1,4 +1,4 @@
-package com.example.shmr.app.navigation.model
+package com.example.shmr.navigation.model
 
 import com.example.shmr.R
 
