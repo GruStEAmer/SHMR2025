@@ -26,17 +26,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val keystoreFile = project.rootProject.file("local.properties")
-        val properties = Properties()
-        properties.load(keystoreFile.inputStream())
-
-        val apiToken = properties.getProperty("API_TOKEN") ?: ""
-
-        buildConfigField(
-            type = "String",
-            name = "API_TOKEN",
-            value = apiToken
-        )
     }
 
     buildTypes {
@@ -67,6 +56,7 @@ dependencies {
     implementation(project(":features:check"))
     implementation(project(":features:categories"))
     implementation(project(":core:network"))
+    implementation(project(":core:ui"))
 
 
 

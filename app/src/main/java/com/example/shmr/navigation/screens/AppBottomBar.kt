@@ -13,8 +13,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.shmr.navigation.model.NavigationBottomModel
-import com.example.shmr.core.ui.theme.Green
-import com.example.shmr.core.ui.theme.LightGreen
+import com.example.ui.theme.Green
+import com.example.ui.theme.LightGreen
 
 @Composable
 fun AppBottomBar(
