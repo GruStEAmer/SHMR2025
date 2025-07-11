@@ -11,13 +11,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.account.navigation.AccountNavigationScreen
 import com.example.categories.navigation.CategoriesNavigationScreen
 import com.example.shmr.navigation.model.NavigationBottomModel
-import com.example.shmr.features.check.navigation.CheckNavigationScreen
 import com.example.shmr.features.expenses.navigation.ExpensesNavigationScreen
 import com.example.shmr.features.income.navigation.IncomeNavigationScreen
 import com.example.shmr.features.settings.navigation.SettingsNavigationScreen
-import com.example.shmr.features.settings.ui.screens.SettingsScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -27,7 +26,7 @@ fun NavigationScreen(navController:NavHostController = rememberNavController()) 
     ) {
         NavHost(
             navController = navController,
-            startDestination = NavigationBottomModel.CheckNavigation.route,
+            startDestination = NavigationBottomModel.AccountNavigation.route,
             modifier = Modifier,
             enterTransition = { fadeIn(tween(700)) },
             exitTransition = { fadeOut(tween(700)) },
@@ -37,8 +36,8 @@ fun NavigationScreen(navController:NavHostController = rememberNavController()) 
             composable(route = NavigationBottomModel.SettingsNavigation.route) {
                 SettingsNavigationScreen()
             }
-            composable(route = NavigationBottomModel.CheckNavigation.route) {
-                CheckNavigationScreen()
+            composable(route = NavigationBottomModel.AccountNavigation.route) {
+                AccountNavigationScreen()
             }
             composable(route = NavigationBottomModel.IncomeNavigation.route) {
                 IncomeNavigationScreen()

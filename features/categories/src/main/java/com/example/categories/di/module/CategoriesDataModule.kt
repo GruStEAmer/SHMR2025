@@ -2,7 +2,7 @@ package com.example.categories.di.module
 
 import com.example.categories.data.remote.apiService.CategoryApiService
 import com.example.categories.data.repository.CategoryRepositoryImpl
-import com.example.categories.di.scope.CategoriesScope
+import com.example.categories.di.annotations.CategoriesScope
 import com.example.categories.domain.repository.CategoryRepository
 import com.example.categories.ui.screens.CategoryViewModel
 import dagger.Module

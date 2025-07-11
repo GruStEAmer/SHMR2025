@@ -1,4 +1,4 @@
-package com.example.categories.di.scope
+package com.example.categories.di.annotations
 
 import javax.inject.Scope
 

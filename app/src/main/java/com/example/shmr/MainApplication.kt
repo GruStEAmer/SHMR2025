@@ -1,6 +1,7 @@
 package com.example.shmr
 
 import android.app.Application
+import com.example.account.di.deps.AccountDepsStore
 import com.example.categories.di.deps.CategoriesDepsStore
 import com.example.shmr.di.AppComponent
 import com.example.shmr.di.AppContainer
@@ -18,6 +19,7 @@ class MainApplication: Application() {
         appComponent = DaggerAppComponent.create()
 
         CategoriesDepsStore.categoriesDeps = appComponent
+        AccountDepsStore.accountDeps = appComponent
 
         container = DefaultAppContainer()
     }
