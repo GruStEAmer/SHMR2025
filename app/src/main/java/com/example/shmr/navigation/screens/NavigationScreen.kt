@@ -13,8 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.account.navigation.AccountNavigationScreen
 import com.example.categories.navigation.CategoriesNavigationScreen
+import com.example.expenses.navigation.ExpensesNavigationScreen
 import com.example.shmr.navigation.model.NavigationBottomModel
-import com.example.shmr.features.expenses.navigation.ExpensesNavigationScreen
 import com.example.shmr.features.income.navigation.IncomeNavigationScreen
 import com.example.shmr.features.settings.navigation.SettingsNavigationScreen
 
