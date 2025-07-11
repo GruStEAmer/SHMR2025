@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    id("kotlin-kapt")
 }
 
 android {
@@ -25,17 +26,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val keystoreFile = project.rootProject.file("local.properties")
-        val properties = Properties()
-        properties.load(keystoreFile.inputStream())
-
-        val apiToken = properties.getProperty("API_TOKEN") ?: ""
-
-        buildConfigField(
-            type = "String",
-            name = "API_TOKEN",
-            value = apiToken
-        )
     }
 
     buildTypes {
@@ -60,10 +50,19 @@ android {
 }
 
 dependencies {
+    implementation(project(":features:settings"))
+    implementation(project(":features:income"))
+    implementation(project(":features:expenses"))
+    implementation(project(":features:check"))
+    implementation(project(":features:categories"))
+    implementation(project(":core:network"))
+    implementation(project(":core:ui"))
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
+
+
+    //Dagger 2
+    implementation(libs.dagger)
+    kapt(libs.dagger.compiler)
 
     // Retrofit
     implementation(libs.kotlinx.serialization.json)
@@ -78,6 +77,11 @@ dependencies {
 
     //SplashScreen
     implementation(libs.androidx.core.splashscreen)
+
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
