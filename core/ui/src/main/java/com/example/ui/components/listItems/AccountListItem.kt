@@ -25,15 +25,16 @@ import com.example.ui.theme.LightGreen
 fun AccountListItem(
     name: String,
     balance: String = "",
-    currency: String,
-    emoji: String? = null
+    currency: String? = null,
+    emoji: String? = null,
+    clicked: () -> Unit = {}
 ) {
     val cur = when(currency) {
         "₽" -> "₽"
         "RUB" -> "₽"
         "USD" -> "$"
         "EUR" -> "€"
-        else -> "-"
+        else -> ""
     }
     ListItem(
         headlineContent = {
@@ -55,7 +56,7 @@ fun AccountListItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
-            .clickable{ },
+            .clickable{ clicked() },
         leadingContent = emoji?.let{
             {
                 Text(

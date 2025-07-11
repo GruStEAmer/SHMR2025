@@ -31,7 +31,8 @@ fun TransactionListItem(
     amount: String,
     currency: String = "RUB",
     comment: String? = null,
-    date: String? = null
+    date: String? = null,
+    clicked: () -> Unit = {}
 ) {
     val cur = when(currency) {
         "₽" -> "₽"
@@ -70,7 +71,7 @@ fun TransactionListItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .clickable { },
+            .clickable { clicked() },
 
         supportingContent = {
             comment?.let{

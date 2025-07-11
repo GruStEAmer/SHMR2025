@@ -1,9 +1,12 @@
 package com.example.expenses.ui.screens
 
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expenses.data.model.TransactionResponse
 import com.example.expenses.domain.repository.ExpensesRepository
+import com.example.expenses.ui.screens.model.TransactionResponseUi
+import com.example.expenses.ui.screens.model.toTransactionResponseUi
 import com.example.ui.state.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,6 +50,13 @@ class ExpensesViewModel @Inject constructor(
             } else {
                 _expensesUiState.value = UiState.Error(data.exceptionOrNull()!!)
             }
+        }
+    }
+    fun getTransactionById(id: Int): TransactionResponseUi? {
+        return when (val currentState = expensesUiState.value) {
+            is UiState.Success -> currentState.data.find { it.id == id }?.toTransactionResponseUi()
+            is UiState.Loading -> null
+            is UiState.Error -> null
         }
     }
 }

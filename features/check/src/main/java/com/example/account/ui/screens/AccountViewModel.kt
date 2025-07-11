@@ -38,15 +38,10 @@ class AccountViewModel @Inject constructor(
 
     fun putAccount(name: String, balance: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _checkUiState.value = UiState.Loading
             val accountRequest = AccountCreateRequest(name, balance, "RUB")
             val data = repository.putAccountById(accountCreateRequest = accountRequest)
 
-            if (data.isSuccess) {
-                _checkUiState.value = UiState.Success(data.getOrNull()!!)
-            } else {
-                _checkUiState.value = UiState.Error(data.exceptionOrNull()!!)
-            }
+            getAccountInfo()
         }
     }
 }

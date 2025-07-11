@@ -18,7 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.expenses.data.model.TransactionResponse
+import com.example.expenses.navigation.ExpensesNavigationModel
 import com.example.ui.R
 import com.example.ui.components.CircleButton
 import com.example.ui.components.ErrorScreen
@@ -30,10 +32,9 @@ import com.example.ui.state.UiState
 
 @Composable
 fun ExpensesScreen(
-    factory: ViewModelProvider.Factory,
-    navigation: () -> Unit
+    expensesViewModel: ExpensesViewModel,
+    navController: NavController
 ) {
-    val expensesViewModel: ExpensesViewModel = viewModel(factory = factory)
     val uiState by expensesViewModel.expensesUiState.collectAsState()
     val sumOfTransaction by expensesViewModel.sumExpenses.collectAsState()
 
@@ -42,7 +43,7 @@ fun ExpensesScreen(
         is UiState.Success -> ExpensesScreenUi(
             transactions = (uiState as UiState.Success<List<TransactionResponse>>).data,
             sum = sumOfTransaction,
-            navigation = navigation
+            navController = navController
         )
         is UiState.Error -> ErrorScreen(
             message = (uiState as UiState.Error).error.message,
@@ -55,14 +56,22 @@ fun ExpensesScreen(
 fun ExpensesScreenUi(
     transactions: List<TransactionResponse>,
     sum: Double,
-    navigation: () -> Unit
+    navController: NavController
 ) {
     Scaffold(
         topBar = {
             AppTopBar(
                 title = "Расходы сегодня",
                 endIcon = R.drawable.ic_history,
-                endNavigation = navigation
+                endNavigation = {
+                    navController.navigate(ExpensesNavigationModel.ExpensesHistory.route) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            saveState = true
+                        }
+                        restoreState = true
+                        launchSingleTop = true
+                    }
+                }
             )
         }
     ) { innerPadding ->
@@ -98,7 +107,10 @@ fun ExpensesScreenUi(
                             emoji = it.category.emoji,
                             amount = it.amount,
                             currency = it.account.currency,
-                            comment = it.comment
+                            comment = it.comment,
+                            clicked = {
+                                navController.navigate("expenses_detail/${it.id}")
+                            }
                         )
                     }
                 }
