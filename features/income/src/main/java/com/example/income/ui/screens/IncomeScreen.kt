@@ -1,4 +1,4 @@
-package com.example.expenses.ui.screens
+package com.example.income.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.expenses.data.model.TransactionResponse
+import com.example.income.data.model.TransactionResponse
 import com.example.ui.R
 import com.example.ui.components.CircleButton
 import com.example.ui.components.ErrorScreen
@@ -29,30 +29,30 @@ import com.example.ui.navigationBar.AppTopBar
 import com.example.ui.state.UiState
 
 @Composable
-fun ExpensesScreen(
+fun IncomeScreen(
     factory: ViewModelProvider.Factory,
     navigation: () -> Unit
 ) {
-    val expensesViewModel: ExpensesViewModel = viewModel(factory = factory)
-    val uiState by expensesViewModel.expensesUiState.collectAsState()
-    val sumOfTransaction by expensesViewModel.sumExpenses.collectAsState()
+    val incomeViewModel: IncomeViewModel = viewModel(factory = factory)
+    val uiState by incomeViewModel.incomeUiState.collectAsState()
+    val sumOfTransaction by incomeViewModel.sumIncome.collectAsState()
 
     when (uiState) {
         is UiState.Loading -> LoadingScreen()
-        is UiState.Success -> ExpensesScreenUi(
+        is UiState.Success -> IncomeScreenUi(
             transactions = (uiState as UiState.Success<List<TransactionResponse>>).data,
             sum = sumOfTransaction,
             navigation = navigation
         )
         is UiState.Error -> ErrorScreen(
-            message = (uiState as UiState.Error).error.message,
-            reloadData = { expensesViewModel.getTransactions() }
+            message = (uiState as UiState.Error).error.message ?: "Unknown error",
+            reloadData = { incomeViewModel.getIncomes() }
         )
     }
 }
 
 @Composable
-fun ExpensesScreenUi(
+fun IncomeScreenUi(
     transactions: List<TransactionResponse>,
     sum: Double,
     navigation: () -> Unit
@@ -60,7 +60,7 @@ fun ExpensesScreenUi(
     Scaffold(
         topBar = {
             AppTopBar(
-                title = "Расходы сегодня",
+                title = "Доходы сегодня",
                 endIcon = R.drawable.ic_history,
                 endNavigation = navigation
             )
@@ -105,8 +105,7 @@ fun ExpensesScreenUi(
             }
             CircleButton(Modifier
                 .align(Alignment.BottomEnd)
-                .padding(bottom = 100.dp)
-            )
+                .padding(bottom = 100.dp))
         }
     }
 }

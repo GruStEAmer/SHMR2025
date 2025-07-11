@@ -12,7 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.unit.dp
 import com.example.account.data.model.AccountResponse
 import com.example.ui.R
 import com.example.ui.components.CircleButton
@@ -74,7 +74,10 @@ fun AccountScreenUi(
                     currency = account.currency,
                 )
             }
-            CircleButton(Modifier.align(Alignment.BottomEnd))
+            CircleButton(Modifier
+                .align(Alignment.BottomEnd)
+                .padding(bottom = 100.dp)
+            )
         }
     }
 }
