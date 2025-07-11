@@ -27,8 +27,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.categories.data.model.Category
+import com.example.categories.di.component.CategoriesComponent
+import com.example.categories.di.deps.CategoryComponentViewModel
+import com.example.categories.di.utils.rememberCategoriesComponent
 import com.example.ui.components.ErrorScreen
 import com.example.ui.components.LoadingScreen
 import com.example.ui.navigationBar.AppTopBar
@@ -37,8 +41,12 @@ import com.example.ui.R
 import com.example.ui.components.listItems.CategoryListItem
 
 @Composable
-fun CategoryScreen() {
-    val categoryViewModel: CategoryViewModel = viewModel()
+fun CategoryScreen(
+    factory: ViewModelProvider.Factory
+) {
+    val categoryViewModel: CategoryViewModel = viewModel(
+        factory = factory
+    )
     val uiState by categoryViewModel.categoryUiState.collectAsState()
     val targetCategories by categoryViewModel.targetCategoryUiState.collectAsState()
 
@@ -107,10 +115,4 @@ fun CategoryScreenUi(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun CategoryScreenPreview() {
-    CategoryScreen()
 }

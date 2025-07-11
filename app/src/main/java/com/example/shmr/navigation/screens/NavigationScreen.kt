@@ -11,11 +11,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.categories.ui.screens.CategoryScreen
+import com.example.categories.navigation.CategoriesNavigationScreen
 import com.example.shmr.navigation.model.NavigationBottomModel
 import com.example.shmr.features.check.navigation.CheckNavigationScreen
 import com.example.shmr.features.expenses.navigation.ExpensesNavigationScreen
 import com.example.shmr.features.income.navigation.IncomeNavigationScreen
+import com.example.shmr.features.settings.navigation.SettingsNavigationScreen
 import com.example.shmr.features.settings.ui.screens.SettingsScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -34,7 +35,7 @@ fun NavigationScreen(navController:NavHostController = rememberNavController()) 
             popExitTransition = { fadeOut(tween(700)) },
         ) {
             composable(route = NavigationBottomModel.SettingsNavigation.route) {
-                SettingsScreen()
+                SettingsNavigationScreen()
             }
             composable(route = NavigationBottomModel.CheckNavigation.route) {
                 CheckNavigationScreen()
@@ -46,7 +47,7 @@ fun NavigationScreen(navController:NavHostController = rememberNavController()) 
                 ExpensesNavigationScreen()
             }
             composable(route = NavigationBottomModel.CategoriesNavigation.route) {
-                CategoryScreen()
+                CategoriesNavigationScreen()
             }
         }
     }
