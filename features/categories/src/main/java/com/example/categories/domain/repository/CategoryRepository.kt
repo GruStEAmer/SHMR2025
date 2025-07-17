@@ -1,9 +1,9 @@
 package com.example.categories.domain.repository
 
-import com.example.network.model.category.Category
+import com.example.categories.ui.model.CategoryUi
 
 interface CategoryRepository {
-    suspend fun getCategories():Result<List<Category>>
+    suspend fun getCategories():Result<List<CategoryUi>>
 
-    suspend fun getCategoriesByType(isIncome: Boolean) : Result<List<Category>>
+    suspend fun getCategoriesByType(isIncome: Boolean) : Result<List<CategoryUi>>
 }

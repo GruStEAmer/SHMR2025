@@ -28,13 +28,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.network.model.category.Category
+import com.example.categories.ui.model.CategoryUi
+import com.example.ui.R
 import com.example.ui.components.ErrorScreen
 import com.example.ui.components.LoadingScreen
+import com.example.ui.components.listItems.CategoryListItem
 import com.example.ui.navigationBar.AppTopBar
 import com.example.ui.state.UiState
-import com.example.ui.R
-import com.example.ui.components.listItems.CategoryListItem
 
 @Composable
 fun CategoryScreen(
@@ -75,7 +75,7 @@ fun CategoryScreen(
 
 @Composable
 fun CategoryScreenUi(
-    categories: List<Category>,
+    categories: List<CategoryUi>,
     searchCategories: (String) -> Unit,
     modifier: Modifier
 ) {

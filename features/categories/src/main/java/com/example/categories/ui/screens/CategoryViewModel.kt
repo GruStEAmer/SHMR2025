@@ -3,6 +3,7 @@ package com.example.categories.ui.screens
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.categories.domain.repository.CategoryRepository
+import com.example.categories.ui.model.CategoryUi
 import com.example.network.model.category.Category
 import com.example.ui.state.UiState
 import kotlinx.coroutines.Dispatchers
@@ -16,11 +17,11 @@ class CategoryViewModel @Inject constructor(
     private val repository: CategoryRepository
 ): ViewModel() {
 
-    private val _categoryUiState = MutableStateFlow<UiState<List<Category>>>(UiState.Loading)
-    val categoryUiState: StateFlow<UiState<List<Category>>> = _categoryUiState.asStateFlow()
+    private val _categoryUiState = MutableStateFlow<UiState<List<CategoryUi>>>(UiState.Loading)
+    val categoryUiState: StateFlow<UiState<List<CategoryUi>>> = _categoryUiState.asStateFlow()
 
-    private val _targetCategoryUiState = MutableStateFlow<List<Category>>(emptyList())
-    val targetCategoryUiState: StateFlow<List<Category>> = _targetCategoryUiState.asStateFlow()
+    private val _targetCategoryUiState = MutableStateFlow<List<CategoryUi>>(emptyList())
+    val targetCategoryUiState: StateFlow<List<CategoryUi>> = _targetCategoryUiState.asStateFlow()
 
     init {
         getCategories()
