@@ -1,13 +1,12 @@
 package com.example.expenses.ui.screens
 
 import android.util.Log
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expenses.data.model.TransactionRequest
 import com.example.expenses.domain.repository.ExpensesRepository
 import com.example.expenses.ui.model.TransactionResponseUi
 import com.example.expenses.ui.model.toTransactionResponseUi
+import com.example.network.model.transaction.TransactionRequest
 import com.example.ui.state.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

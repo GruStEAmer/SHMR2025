@@ -1,6 +1,6 @@
 package com.example.income.ui.model
 
-import com.example.income.data.model.TransactionResponse
+import com.example.network.model.transaction.TransactionResponse
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime

@@ -1,7 +1,7 @@
 package com.example.income.domain.repository
 
-import com.example.income.data.model.TransactionRequest
-import com.example.income.data.model.TransactionResponse
+import com.example.network.model.transaction.TransactionRequest
+import com.example.network.model.transaction.TransactionResponse
 
 interface IncomeRepository {
 

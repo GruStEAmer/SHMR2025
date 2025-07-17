@@ -1,14 +1,14 @@
 package com.example.expenses.data.repository
 
-import com.example.expenses.data.model.TransactionRequest
-import com.example.expenses.data.model.TransactionResponse
-import com.example.expenses.data.remote.apiService.ExpensesApiService
 import com.example.expenses.domain.repository.ExpensesRepository
+import com.example.network.apiService.TransactionApiService
+import com.example.network.model.transaction.TransactionRequest
+import com.example.network.model.transaction.TransactionResponse
 import java.net.UnknownHostException
 import javax.inject.Inject
 
 class ExpensesRepositoryImpl @Inject constructor(
-    private val expensesApiService: ExpensesApiService
+    private val expensesApiService: TransactionApiService
 ): ExpensesRepository {
 
         override suspend fun postTransaction(transactionRequest: TransactionRequest): Result<Unit> {

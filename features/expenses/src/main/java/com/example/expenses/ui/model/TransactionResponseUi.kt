@@ -1,11 +1,10 @@
 package com.example.expenses.ui.model
 
-import com.example.expenses.data.model.TransactionResponse
+import com.example.network.model.transaction.TransactionResponse
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 data class TransactionResponseUi(
     val id: Int,

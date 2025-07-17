@@ -2,19 +2,13 @@ package com.example.expenses.ui.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expenses.data.model.TransactionResponse
 import com.example.expenses.domain.repository.ExpensesRepository
-import com.example.expenses.ui.model.TransactionResponseUi
-import com.example.expenses.ui.model.toTransactionResponseUi
+import com.example.network.model.transaction.TransactionResponse
 import com.example.ui.state.UiState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject

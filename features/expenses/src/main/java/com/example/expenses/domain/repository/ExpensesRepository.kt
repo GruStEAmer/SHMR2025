@@ -1,7 +1,7 @@
 package com.example.expenses.domain.repository
 
-import com.example.expenses.data.model.TransactionRequest
-import com.example.expenses.data.model.TransactionResponse
+import com.example.network.model.transaction.TransactionRequest
+import com.example.network.model.transaction.TransactionResponse
 
 interface ExpensesRepository {
 

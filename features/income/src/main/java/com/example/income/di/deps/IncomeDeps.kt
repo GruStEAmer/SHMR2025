@@ -1,8 +1,8 @@
 package com.example.income.di.deps
 
-import retrofit2.Retrofit
+import com.example.network.apiService.TransactionApiService
 
 interface IncomeDeps {
 
-    val retrofit: Retrofit
+    val transactionApiService: TransactionApiService
 }

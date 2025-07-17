@@ -3,10 +3,10 @@ package com.example.income.ui.screens
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.income.data.model.TransactionRequest
 import com.example.income.domain.repository.IncomeRepository
 import com.example.income.ui.model.TransactionResponseUi
 import com.example.income.ui.model.toTransactionResponseUi
+import com.example.network.model.transaction.TransactionRequest
 import com.example.ui.state.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

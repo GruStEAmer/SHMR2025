@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.expenses.data.model.TransactionResponse
+import com.example.network.model.transaction.TransactionResponse
 import com.example.ui.R
 import com.example.ui.components.CustomDatePicker
 import com.example.ui.components.ErrorScreen
