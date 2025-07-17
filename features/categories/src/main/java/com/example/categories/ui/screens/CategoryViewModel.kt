@@ -3,7 +3,7 @@ package com.example.categories.ui.screens
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.categories.domain.repository.CategoryRepository
-import com.example.shmr.domain.model.category.Category
+import com.example.network.model.category.Category
 import com.example.ui.state.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

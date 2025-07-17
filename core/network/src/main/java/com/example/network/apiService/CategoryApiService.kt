@@ -1,6 +1,6 @@
 package com.example.network.apiService
 
-import com.example.shmr.domain.model.category.Category
+import com.example.network.model.category.Category
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

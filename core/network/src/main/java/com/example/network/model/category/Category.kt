@@ -1,4 +1,4 @@
-package com.example.shmr.domain.model.category
+package com.example.network.model.category
 
 import kotlinx.serialization.Serializable
 

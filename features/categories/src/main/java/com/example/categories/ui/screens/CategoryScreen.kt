@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.shmr.domain.model.category.Category
+import com.example.network.model.category.Category
 import com.example.ui.components.ErrorScreen
 import com.example.ui.components.LoadingScreen
 import com.example.ui.navigationBar.AppTopBar

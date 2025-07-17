@@ -1,10 +1,10 @@
 package com.example.network.apiService
 
-import com.example.shmr.domain.model.account.Account
-import com.example.shmr.domain.model.account.AccountCreateRequest
-import com.example.shmr.domain.model.account.AccountHistoryResponse
-import com.example.shmr.domain.model.account.AccountResponse
-import com.example.shmr.domain.model.account.AccountUpdateRequest
+import com.example.network.model.account.Account
+import com.example.network.model.account.AccountCreateRequest
+import com.example.network.model.account.AccountHistoryResponse
+import com.example.network.model.account.AccountResponse
+import com.example.network.model.account.AccountUpdateRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE

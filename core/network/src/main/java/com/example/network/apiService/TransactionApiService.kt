@@ -1,8 +1,8 @@
 package com.example.network.apiService
 
-import com.example.shmr.domain.model.transaction.Transaction
-import com.example.shmr.domain.model.transaction.TransactionRequest
-import com.example.shmr.domain.model.transaction.TransactionResponse
+import com.example.network.model.transaction.Transaction
+import com.example.network.model.transaction.TransactionRequest
+import com.example.network.model.transaction.TransactionResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE

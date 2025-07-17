@@ -2,7 +2,7 @@ package com.example.categories.data.repository
 
 import com.example.categories.domain.repository.CategoryRepository
 import com.example.network.apiService.CategoryApiService
-import com.example.shmr.domain.model.category.Category
+import com.example.network.model.category.Category
 import java.net.UnknownHostException
 import javax.inject.Inject
 

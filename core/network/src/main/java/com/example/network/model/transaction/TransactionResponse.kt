@@ -1,7 +1,7 @@
-package com.example.shmr.domain.model.transaction
+package com.example.network.model.transaction
 
-import com.example.shmr.domain.model.account.AccountBrief
-import com.example.shmr.domain.model.category.Category
+import com.example.network.model.account.AccountBrief
+import com.example.network.model.category.Category
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,4 +1,4 @@
-package com.example.shmr.domain.model.transaction
+package com.example.network.model.transaction
 
 import kotlinx.serialization.Serializable
 
