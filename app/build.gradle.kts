@@ -57,6 +57,7 @@ dependencies {
     implementation(project(":features:categories"))
     implementation(project(":core:network"))
     implementation(project(":core:ui"))
+    implementation(project(":core:local"))
 
 
 
