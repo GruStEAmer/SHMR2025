@@ -1,6 +1,7 @@
 package com.example.shmr
 
 import android.app.Application
+import android.content.Context
 import com.example.account.di.deps.AccountDepsStore
 import com.example.categories.di.deps.CategoriesDepsStore
 import com.example.expenses.di.deps.ExpensesDepsStore
@@ -14,7 +15,9 @@ class MainApplication: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        appComponent = DaggerAppComponent.create()
+        appComponent = DaggerAppComponent
+            .factory()
+            .create(this)
 
         CategoriesDepsStore.categoriesDeps = appComponent
         AccountDepsStore.accountDeps = appComponent
@@ -23,3 +26,8 @@ class MainApplication: Application() {
 
     }
 }
+val Context.appComponent: AppComponent
+    get() = when (this) {
+        is MainApplication -> appComponent
+        else -> applicationContext.appComponent
+    }
