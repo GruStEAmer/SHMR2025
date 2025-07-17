@@ -1,8 +1,9 @@
 package com.example.categories.di.deps
 
-import retrofit2.Retrofit
+import com.example.network.apiService.CategoryApiService
+
 
 interface CategoriesDeps {
 
-    val retrofit: Retrofit
+    var categoryApiService: CategoryApiService
 }

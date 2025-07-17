@@ -2,9 +2,9 @@ package com.example.account.ui.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.account.data.model.AccountCreateRequest
-import com.example.account.data.model.AccountResponse
 import com.example.account.domain.repository.AccountRepository
+import com.example.shmr.domain.model.account.AccountCreateRequest
+import com.example.shmr.domain.model.account.AccountResponse
 import com.example.ui.state.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -30,8 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.account.data.model.AccountResponse
+import com.example.shmr.domain.model.account.AccountResponse
 import com.example.ui.R
 import com.example.ui.components.ErrorScreen
 import com.example.ui.components.LoadingScreen

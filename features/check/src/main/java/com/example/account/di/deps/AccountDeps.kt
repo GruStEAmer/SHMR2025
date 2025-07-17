@@ -1,8 +1,8 @@
 package com.example.account.di.deps
 
-import retrofit2.Retrofit
+import com.example.network.apiService.AccountApiService
 
 interface AccountDeps {
 
-    val retrofit: Retrofit
+    var accountApiService: AccountApiService
 }

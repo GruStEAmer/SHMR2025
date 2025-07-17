@@ -1,6 +1,6 @@
 package com.example.categories.domain.repository
 
-import com.example.categories.data.model.Category
+import com.example.shmr.domain.model.category.Category
 
 interface CategoryRepository {
     suspend fun getCategories():Result<List<Category>>

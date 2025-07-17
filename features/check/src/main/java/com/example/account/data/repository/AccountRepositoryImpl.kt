@@ -1,9 +1,9 @@
 package com.example.account.data.repository
 
-import com.example.account.data.model.AccountCreateRequest
-import com.example.account.data.model.AccountResponse
-import com.example.account.data.remote.apiService.AccountApiService
 import com.example.account.domain.repository.AccountRepository
+import com.example.network.apiService.AccountApiService
+import com.example.shmr.domain.model.account.AccountCreateRequest
+import com.example.shmr.domain.model.account.AccountResponse
 import java.net.UnknownHostException
 import javax.inject.Inject
 

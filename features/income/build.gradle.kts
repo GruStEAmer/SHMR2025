@@ -37,7 +37,7 @@ android {
 
 dependencies {
     implementation(project(":core:ui"))
-
+    implementation(project(":core:network"))
     // Dagger 2
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)

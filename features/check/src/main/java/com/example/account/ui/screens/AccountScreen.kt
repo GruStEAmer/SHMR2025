@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.account.data.model.AccountResponse
+import com.example.shmr.domain.model.account.AccountResponse
 import com.example.ui.R
 import com.example.ui.components.CircleButton
 import com.example.ui.components.ErrorScreen

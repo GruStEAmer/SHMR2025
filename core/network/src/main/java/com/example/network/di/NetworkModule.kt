@@ -2,6 +2,9 @@ package com.example.network.di
 
 import com.example.network.utils.ApiKeyInterceptor
 import com.example.network.utils.RetryInterceptor
+import com.example.network.apiService.AccountApiService
+import com.example.network.apiService.CategoryApiService
+import com.example.network.apiService.TransactionApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -9,6 +12,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -30,5 +34,18 @@ class NetworkModule {
             .addConverterFactory(json.asConverterFactory(contentType))
             .client(okHttpClient)
             .build()
+    }
+
+    @[Provides Singleton]
+    internal fun provideCategoryApiService(retrofit: Retrofit): CategoryApiService {
+        return retrofit.create<CategoryApiService>()
+    }
+    @[Provides Singleton]
+    internal fun provideAccountApiService(retrofit: Retrofit): AccountApiService {
+        return retrofit.create<AccountApiService>()
+    }
+    @[Provides Singleton]
+    internal fun provideTransactionApiService(retrofit: Retrofit): TransactionApiService {
+        return retrofit.create<TransactionApiService>()
     }
 }

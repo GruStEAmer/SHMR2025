@@ -1,7 +1,7 @@
 package com.example.account.domain.repository
 
-import com.example.account.data.model.AccountCreateRequest
-import com.example.account.data.model.AccountResponse
+import com.example.shmr.domain.model.account.AccountCreateRequest
+import com.example.shmr.domain.model.account.AccountResponse
 
 interface AccountRepository {
     suspend fun getAccountById(id: Int = 11): Result<AccountResponse>
