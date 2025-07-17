@@ -22,7 +22,7 @@ fun ExpensesNavigationScreen(
     component: ExpensesComponent = rememberExpensesComponent(),
     navController: NavHostController = rememberNavController()
 ){
-    val expensesViewModel: ExpensesViewModel = viewModel(factory = component.viewModelFactory())
+    val factory = component.viewModelFactory()
 
     NavHost(
         navController = navController,
@@ -30,24 +30,24 @@ fun ExpensesNavigationScreen(
     ) {
         composable(ExpensesNavigationModel.Expenses.route) {
             ExpensesScreen(
-                expensesViewModel = expensesViewModel,
+                factory = factory,
                 navController = navController
             )
         }
         composable(ExpensesNavigationModel.ExpensesHistory.route) {
             ExpensesHistoryScreen(
-                factory = component.viewModelFactory(),
-                navigation = { navController.popBackStack() },
+                factory = factory,
+                navController = navController
             )
         }
         composable(
-            route = "expenses_detail/{expensesId}",
+            route = ExpensesNavigationModel.ExpensesDetailById.route,
             arguments = listOf(navArgument("expensesId"){ type = NavType.IntType })
         ){ backStackEntry ->
             val expensesId = backStackEntry.arguments?.getInt("expensesId") ?: 0
             ExpensesDetailByIdScreen(
                 id = expensesId,
-                expensesViewModel = expensesViewModel,
+                factory = factory,
                 navigation = { navController.popBackStack() }
             )
         }

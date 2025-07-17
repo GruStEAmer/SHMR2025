@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.expenses.data.model.TransactionResponse
 import com.example.ui.R
 import com.example.ui.components.CustomDatePicker
@@ -32,11 +33,12 @@ import java.time.ZoneId
 @Composable
 fun ExpensesHistoryScreen(
     factory: ViewModelProvider.Factory,
-    navigation: () -> Unit
+    navController: NavController
 ) {
-    val expensesViewModel: ExpensesViewModel = viewModel(factory = factory)
-    val uiState by expensesViewModel.expensesUiState.collectAsState()
-    val sumTransaction by expensesViewModel.sumExpenses.collectAsState()
+    val expensesHistoryViewModel: ExpensesHistoryViewModel = viewModel(factory = factory)
+
+    val uiState by expensesHistoryViewModel.expensesUiState.collectAsState()
+    val sumTransaction by expensesHistoryViewModel.sumExpenses.collectAsState()
 
     var startDate by remember { mutableStateOf(LocalDate.now().withDayOfMonth(1)) }
     var endDate by remember { mutableStateOf(LocalDate.now()) }
@@ -44,7 +46,7 @@ fun ExpensesHistoryScreen(
     var showEndDatePicker by remember { mutableStateOf(false) }
 
     LaunchedEffect(startDate, endDate) {
-        expensesViewModel.getTransactions(startDate, endDate)
+        expensesHistoryViewModel.getTransactions(startDate, endDate)
     }
 
     Scaffold(
@@ -53,7 +55,7 @@ fun ExpensesHistoryScreen(
                 title = "Моя история",
                 startIcon = R.drawable.ic_return,
                 endIcon = R.drawable.ic_analysis,
-                startNavigation = navigation
+                startNavigation = { navController.popBackStack() }
             )
         }
     ) { innerPadding ->
@@ -74,11 +76,12 @@ fun ExpensesHistoryScreen(
                 is UiState.Loading -> LoadingScreen()
                 is UiState.Success -> ExpensesHistoryScreenUi(
                     (uiState as UiState.Success<List<TransactionResponse>>).data,
+                    navController = navController
                 )
                 is UiState.Error -> ErrorScreen(
                     message = (uiState as UiState.Error).error.message!!,
                     reloadData = {
-                        expensesViewModel.getTransactions(
+                        expensesHistoryViewModel.getTransactions(
                             startDate,
                             endDate
                         )
@@ -119,7 +122,8 @@ fun ExpensesHistoryScreen(
 
 @Composable
 fun ExpensesHistoryScreenUi(
-    transactions: List<TransactionResponse>
+    transactions: List<TransactionResponse>,
+    navController: NavController
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize()
@@ -135,7 +139,8 @@ fun ExpensesHistoryScreenUi(
                 amount = it.amount,
                 currency = "RUB",
                 comment = it.comment,
-                date = it.createdAt
+                date = it.transactionDate,
+                clicked = { navController.navigate("expenses_detail/${it.id}")}
             )
         }
     }

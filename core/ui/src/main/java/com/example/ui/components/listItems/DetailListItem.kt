@@ -15,29 +15,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.R
-import com.example.ui.theme.LightGreen
 
 @Composable
-fun AccountListItem(
+fun DetailListItem(
     name: String,
-    balance: String = "",
-    currency: String? = null,
-    emoji: String? = null,
-    clicked: () -> Unit = {},
-    color: Color = LightGreen
+    text: String,
+    clicked: () -> Unit = {}
 ) {
-    val cur = when(currency) {
-        "₽" -> "₽"
-        "RUB" -> "₽"
-        "USD" -> "$"
-        "EUR" -> "€"
-        else -> ""
-    }
     ListItem(
         headlineContent = {
             Row(
@@ -50,35 +38,20 @@ fun AccountListItem(
                     fontSize = 16.sp
                 )
                 Text(
-                    text = "$balance $cur",
+                    text = text,
                     fontSize = 16.sp
                 )
             }
         },
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)
-            .clickable{ clicked() },
-        leadingContent = emoji?.let{
-            {
-                Text(
-                    text = emoji,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.background)
-                    ,
-                    fontSize = 22.sp
-                )
-            }
-        },
+            .height(70.dp)
+            .clickable { clicked() },
         trailingContent = {
             Icon(
                 painter = painterResource(R.drawable.ic_keyboard_arrow_right),
                 contentDescription = ""
             )
-        },
-        colors = ListItemDefaults.colors(
-            color
-        )
+        }
     )
 }

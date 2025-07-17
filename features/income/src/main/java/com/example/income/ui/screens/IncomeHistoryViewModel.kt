@@ -1,10 +1,7 @@
 package com.example.income.ui.screens
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.income.data.model.TransactionResponse
 import com.example.income.domain.repository.IncomeRepository
 import com.example.ui.state.UiState
@@ -16,9 +13,9 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
-class IncomeViewModel @Inject constructor(
-    private val repository: IncomeRepository
-) : ViewModel() {
+class IncomeHistoryViewModel @Inject constructor(
+    val repository: IncomeRepository
+): ViewModel() {
 
     private val _incomeUiState = MutableStateFlow<UiState<List<TransactionResponse>>>(UiState.Loading)
     val incomeUiState: StateFlow<UiState<List<TransactionResponse>>> = _incomeUiState.asStateFlow()

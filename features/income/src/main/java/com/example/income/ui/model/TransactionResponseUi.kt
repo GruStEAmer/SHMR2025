@@ -1,11 +1,10 @@
-package com.example.expenses.ui.screens.model
+package com.example.income.ui.model
 
-import com.example.expenses.data.model.TransactionResponse
+import com.example.income.data.model.TransactionResponse
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 data class TransactionResponseUi(
     val id: Int,
@@ -14,8 +13,8 @@ data class TransactionResponseUi(
     val accountName: String,
     val categoryName: String,
     val amount: String,
-    val date: String,
-    val time: String,
+    val date: LocalDate,
+    val time: LocalTime,
     val comment: String?,
 )
 
@@ -25,13 +24,14 @@ fun TransactionResponse.toTransactionResponseUi(): TransactionResponseUi{
     val zonedDateTime = instant.atZone(ZoneId.systemDefault())
 
     val date: LocalDate = zonedDateTime.toLocalDate()
-    val time: LocalTime = zonedDateTime.toLocalTime()
+    val timeAll: LocalTime = zonedDateTime.toLocalTime()
 
-    val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-
-    val dateStr = date.format(dateFormatter)
-    val timeStr = time.format(timeFormatter)
+    val time = LocalTime.of(timeAll.hour, timeAll.minute)
+//    val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+//    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+//
+//    val dateStr = date.format(dateFormatter)
+//    val timeStr = time.format(timeFormatter)
 
     return TransactionResponseUi(
         id = this.id,
@@ -40,8 +40,8 @@ fun TransactionResponse.toTransactionResponseUi(): TransactionResponseUi{
         accountName = this.account.name,
         categoryName = this.category.name,
         amount = this.amount,
-        date = dateStr,
-        time = timeStr,
+        date = date,
+        time = time,
         comment = this.comment
     )
 }

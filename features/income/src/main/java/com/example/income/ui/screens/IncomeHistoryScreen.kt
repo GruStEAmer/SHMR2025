@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.income.data.model.TransactionResponse
 import com.example.ui.R
 import com.example.ui.components.CustomDatePicker
@@ -32,9 +33,9 @@ import java.time.ZoneId
 @Composable
 fun IncomeHistoryScreen(
     factory: ViewModelProvider.Factory,
-    navigation: () -> Unit
+    navController: NavController
 ) {
-    val incomeViewModel: IncomeViewModel = viewModel(factory = factory)
+    val incomeViewModel: IncomeHistoryViewModel = viewModel(factory = factory)
     val uiState by incomeViewModel.incomeUiState.collectAsState()
     val sumTransaction by incomeViewModel.sumIncome.collectAsState()
 
@@ -53,7 +54,7 @@ fun IncomeHistoryScreen(
                 title = "Моя история",
                 startIcon = R.drawable.ic_return,
                 endIcon = R.drawable.ic_analysis,
-                startNavigation = navigation
+                startNavigation = { navController.popBackStack() }
             )
         }
     ) { innerPadding ->
@@ -73,7 +74,8 @@ fun IncomeHistoryScreen(
             when (uiState) {
                 is UiState.Loading -> LoadingScreen()
                 is UiState.Success -> IncomeHistoryScreenUi(
-                    (uiState as UiState.Success<List<TransactionResponse>>).data,
+                    transactions = (uiState as UiState.Success<List<TransactionResponse>>).data,
+                    navController = navController
                 )
                 is UiState.Error -> ErrorScreen(
                     message = (uiState as UiState.Error).error.message ?: "Unknown error",
@@ -119,7 +121,8 @@ fun IncomeHistoryScreen(
 
 @Composable
 fun IncomeHistoryScreenUi(
-    transactions: List<TransactionResponse>
+    transactions: List<TransactionResponse>,
+    navController: NavController
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize()
@@ -135,7 +138,8 @@ fun IncomeHistoryScreenUi(
                 amount = it.amount,
                 currency = "RUB",
                 comment = it.comment,
-                date = it.createdAt
+                date = it.transactionDate,
+                clicked = { navController.navigate("income_detail/${it.id}")}
             )
         }
     }

@@ -1,4 +1,4 @@
-package com.example.expenses.ui.screens
+package com.example.income.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,8 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.expenses.data.model.TransactionRequest
-import com.example.expenses.ui.model.TransactionResponseUi
+import com.example.income.data.model.TransactionRequest
+import com.example.income.ui.model.TransactionResponseUi
 import com.example.ui.R
 import com.example.ui.components.CustomDatePicker
 import com.example.ui.components.CustomTimePicker
@@ -32,24 +32,23 @@ import com.example.ui.components.LoadingScreen
 import com.example.ui.components.listItems.DetailListItem
 import com.example.ui.navigationBar.AppTopBar
 import com.example.ui.state.UiState
-import kotlinx.coroutines.delay
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
 
 @Composable
-fun ExpensesDetailByIdScreen(
+fun IncomeDetailByIdScreen(
     id: Int = -1,
     factory: ViewModelProvider.Factory,
     navigation: () -> Unit
-){
-    val expensesViewModel: ExpensesDetailByIdViewModel = viewModel(factory = factory)
-    val transaction by expensesViewModel.transaction.collectAsState()
+) {
+    val incomeViewModel: IncomeDetailByIdViewModel = viewModel(factory = factory)
+    val transaction by incomeViewModel.transaction.collectAsState()
 
     if(id != -1){
         LaunchedEffect(id) {
-            expensesViewModel.getTransactionById(id)
+            incomeViewModel.getTransactionById(id)
         }
     }
     when(transaction){
@@ -57,12 +56,12 @@ fun ExpensesDetailByIdScreen(
         is UiState.Success -> ExpensesDetailByIdScreenUi(
             transaction = (transaction as UiState.Success<TransactionResponseUi>).data,
             putTransaction = { x, y->
-                expensesViewModel.putTransactionById(x,y)},
+                incomeViewModel.putTransactionById(x,y)},
             navigation = navigation
         )
         is UiState.Error -> ErrorScreen(
             message = (transaction as UiState.Error).error.message,
-            reloadData = { expensesViewModel.getTransactionById(id) }
+            reloadData = { incomeViewModel.getTransactionById(id) }
         )
     }
 
@@ -158,7 +157,7 @@ fun ExpensesDetailByIdScreenUi(
                 name = "Время",
                 text = "$time",
                 clicked = { showTimePicker = true },
-                )
+            )
             HorizontalDivider()
             ListItem(
                 headlineContent = {

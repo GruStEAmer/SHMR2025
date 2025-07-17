@@ -11,6 +11,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -18,7 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.income.data.model.TransactionResponse
+import com.example.income.navigation.IncomeNavigationModel
 import com.example.ui.R
 import com.example.ui.components.CircleButton
 import com.example.ui.components.ErrorScreen
@@ -31,18 +34,22 @@ import com.example.ui.state.UiState
 @Composable
 fun IncomeScreen(
     factory: ViewModelProvider.Factory,
-    navigation: () -> Unit
+    navController: NavController
 ) {
     val incomeViewModel: IncomeViewModel = viewModel(factory = factory)
     val uiState by incomeViewModel.incomeUiState.collectAsState()
     val sumOfTransaction by incomeViewModel.sumIncome.collectAsState()
+
+    LaunchedEffect(Unit) {
+        incomeViewModel.getIncomes()
+    }
 
     when (uiState) {
         is UiState.Loading -> LoadingScreen()
         is UiState.Success -> IncomeScreenUi(
             transactions = (uiState as UiState.Success<List<TransactionResponse>>).data,
             sum = sumOfTransaction,
-            navigation = navigation
+            navController = navController
         )
         is UiState.Error -> ErrorScreen(
             message = (uiState as UiState.Error).error.message ?: "Unknown error",
@@ -55,14 +62,14 @@ fun IncomeScreen(
 fun IncomeScreenUi(
     transactions: List<TransactionResponse>,
     sum: Double,
-    navigation: () -> Unit
+    navController: NavController
 ) {
     Scaffold(
         topBar = {
             AppTopBar(
                 title = "Доходы сегодня",
                 endIcon = R.drawable.ic_history,
-                endNavigation = navigation
+                endNavigation = { navController.navigate(IncomeNavigationModel.IncomeHistory.route) }
             )
         }
     ) { innerPadding ->
@@ -98,7 +105,8 @@ fun IncomeScreenUi(
                             emoji = it.category.emoji,
                             amount = it.amount,
                             currency = it.account.currency,
-                            comment = it.comment
+                            comment = it.comment,
+                            clicked = { navController.navigate("income_detail/${it.id}") }
                         )
                     }
                 }

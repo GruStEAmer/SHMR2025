@@ -4,34 +4,23 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expenses.data.model.TransactionResponse
 import com.example.expenses.domain.repository.ExpensesRepository
-import com.example.expenses.ui.model.TransactionResponseUi
-import com.example.expenses.ui.model.toTransactionResponseUi
 import com.example.ui.state.UiState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
-class ExpensesViewModel @Inject constructor(
+class ExpensesHistoryViewModel @Inject constructor(
     val repository: ExpensesRepository
 ): ViewModel() {
-
     private val _expensesUiState = MutableStateFlow<UiState<List<TransactionResponse>>>(UiState.Loading)
     val expensesUiState: StateFlow<UiState<List<TransactionResponse>>> = _expensesUiState.asStateFlow()
 
     private val _sumExpenses = MutableStateFlow(0.0)
     val sumExpenses: StateFlow<Double> = _sumExpenses.asStateFlow()
-
-    init {
-        getTransactions()
-    }
 
     fun getTransactions(
         startDate: LocalDate = LocalDate.now(),

@@ -2,6 +2,8 @@ package com.example.expenses.di.module
 
 import androidx.lifecycle.ViewModel
 import com.example.expenses.di.annotations.ViewModelKey
+import com.example.expenses.ui.screens.ExpensesDetailByIdViewModel
+import com.example.expenses.ui.screens.ExpensesHistoryViewModel
 import com.example.expenses.ui.screens.ExpensesViewModel
 import dagger.Binds
 import dagger.Module
@@ -13,4 +15,14 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ExpensesViewModel::class)
     abstract fun bindExpensesViewModel(viewModel: ExpensesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ExpensesHistoryViewModel::class)
+    abstract fun bindExpensesHistoryViewModel(viewModel: ExpensesHistoryViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ExpensesDetailByIdViewModel::class)
+    abstract fun bindExpensesDetailByIdViewModel(viewModel: ExpensesDetailByIdViewModel): ViewModel
 }

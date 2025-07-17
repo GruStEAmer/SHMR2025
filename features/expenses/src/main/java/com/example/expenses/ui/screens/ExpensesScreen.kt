@@ -11,6 +11,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,11 +33,16 @@ import com.example.ui.state.UiState
 
 @Composable
 fun ExpensesScreen(
-    expensesViewModel: ExpensesViewModel,
+    factory: ViewModelProvider.Factory,
     navController: NavController
 ) {
+    val expensesViewModel: ExpensesViewModel = viewModel(factory = factory)
     val uiState by expensesViewModel.expensesUiState.collectAsState()
     val sumOfTransaction by expensesViewModel.sumExpenses.collectAsState()
+
+    LaunchedEffect(Unit) {
+        expensesViewModel.getTransactions()
+    }
 
     when (uiState) {
         is UiState.Loading -> LoadingScreen()
