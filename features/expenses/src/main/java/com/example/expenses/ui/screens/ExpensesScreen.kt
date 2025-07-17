@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.expenses.navigation.ExpensesNavigationModel
+import com.example.expenses.ui.model.TransactionUi
 import com.example.network.model.transaction.TransactionResponse
 import com.example.ui.R
 import com.example.ui.components.CircleButton
@@ -47,7 +48,7 @@ fun ExpensesScreen(
     when (uiState) {
         is UiState.Loading -> LoadingScreen()
         is UiState.Success -> ExpensesScreenUi(
-            transactions = (uiState as UiState.Success<List<TransactionResponse>>).data,
+            transactions = (uiState as UiState.Success<List<TransactionUi>>).data,
             sum = sumOfTransaction,
             navController = navController
         )
@@ -60,7 +61,7 @@ fun ExpensesScreen(
 
 @Composable
 fun ExpensesScreenUi(
-    transactions: List<TransactionResponse>,
+    transactions: List<TransactionUi>,
     sum: Double,
     navController: NavController
 ) {
@@ -108,11 +109,11 @@ fun ExpensesScreenUi(
                         key = { it -> it.id }
                     ) {
                         TransactionListItem(
-                            categoryId = it.category.id,
-                            categoryName = it.category.name,
-                            emoji = it.category.emoji,
+                            categoryId = it.categoryId,
+                            categoryName = it.categoryName,
+                            emoji = it.categoryEmoji,
                             amount = it.amount,
-                            currency = it.account.currency,
+                            currency = it.accountCurrency,
                             comment = it.comment,
                             clicked = {
                                 navController.navigate("expenses_detail/${it.id}")

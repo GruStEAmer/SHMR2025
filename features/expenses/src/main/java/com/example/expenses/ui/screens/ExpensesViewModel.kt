@@ -3,7 +3,7 @@ package com.example.expenses.ui.screens
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expenses.domain.repository.ExpensesRepository
-import com.example.network.model.transaction.TransactionResponse
+import com.example.expenses.ui.model.TransactionUi
 import com.example.ui.state.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,8 +17,8 @@ class ExpensesViewModel @Inject constructor(
     val repository: ExpensesRepository
 ): ViewModel() {
 
-    private val _expensesUiState = MutableStateFlow<UiState<List<TransactionResponse>>>(UiState.Loading)
-    val expensesUiState: StateFlow<UiState<List<TransactionResponse>>> = _expensesUiState.asStateFlow()
+    private val _expensesUiState = MutableStateFlow<UiState<List<TransactionUi>>>(UiState.Loading)
+    val expensesUiState: StateFlow<UiState<List<TransactionUi>>> = _expensesUiState.asStateFlow()
 
     private val _sumExpenses = MutableStateFlow(0.0)
     val sumExpenses: StateFlow<Double> = _sumExpenses.asStateFlow()
@@ -41,7 +41,7 @@ class ExpensesViewModel @Inject constructor(
             )
 
             if (data.isSuccess) {
-                val transactions = data.getOrNull()!!.filter { !it.category.isIncome }
+                val transactions = data.getOrNull()!!
                 _expensesUiState.value = UiState.Success(transactions)
                 _sumExpenses.value = transactions.sumOf { it.amount.toDouble() }
             } else {

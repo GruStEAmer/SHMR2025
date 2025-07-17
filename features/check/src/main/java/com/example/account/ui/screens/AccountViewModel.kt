@@ -3,8 +3,9 @@ package com.example.account.ui.screens
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.account.domain.repository.AccountRepository
+import com.example.account.ui.mapper.toAccountUi
+import com.example.account.ui.model.AccountUi
 import com.example.network.model.account.AccountCreateRequest
-import com.example.network.model.account.AccountResponse
 import com.example.ui.state.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,8 +18,8 @@ class AccountViewModel @Inject constructor(
     private val repository: AccountRepository
 ) : ViewModel() {
 
-    private val _checkUiState = MutableStateFlow<UiState<AccountResponse>>(UiState.Loading)
-    val checkUiState: StateFlow<UiState<AccountResponse>> = _checkUiState.asStateFlow()
+    private val _checkUiState = MutableStateFlow<UiState<AccountUi>>(UiState.Loading)
+    val checkUiState: StateFlow<UiState<AccountUi>> = _checkUiState.asStateFlow()
 
     init {
         getAccountInfo()

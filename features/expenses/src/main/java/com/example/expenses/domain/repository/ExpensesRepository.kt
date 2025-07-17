@@ -1,5 +1,6 @@
 package com.example.expenses.domain.repository
 
+import com.example.expenses.ui.model.TransactionUi
 import com.example.network.model.transaction.TransactionRequest
 import com.example.network.model.transaction.TransactionResponse
 
@@ -14,11 +15,11 @@ interface ExpensesRepository {
 
     suspend fun getTransactionById(
         id: Int
-    ): Result<TransactionResponse>
+    ): Result<TransactionUi>
     suspend fun getTransactionByAccountIdWithDate(
         accountId: Int = 11,
         startDate:  String,
         endDate: String
-    ) : Result<List<TransactionResponse>>
+    ) : Result<List<TransactionUi>>
 
 }

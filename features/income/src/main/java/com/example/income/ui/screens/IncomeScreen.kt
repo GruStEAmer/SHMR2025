@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.income.navigation.IncomeNavigationModel
+import com.example.income.ui.model.TransactionUi
 import com.example.network.model.transaction.TransactionResponse
 import com.example.ui.R
 import com.example.ui.components.CircleButton
@@ -47,7 +48,7 @@ fun IncomeScreen(
     when (uiState) {
         is UiState.Loading -> LoadingScreen()
         is UiState.Success -> IncomeScreenUi(
-            transactions = (uiState as UiState.Success<List<TransactionResponse>>).data,
+            transactions = (uiState as UiState.Success<List<TransactionUi>>).data,
             sum = sumOfTransaction,
             navController = navController
         )
@@ -60,7 +61,7 @@ fun IncomeScreen(
 
 @Composable
 fun IncomeScreenUi(
-    transactions: List<TransactionResponse>,
+    transactions: List<TransactionUi>,
     sum: Double,
     navController: NavController
 ) {
@@ -100,11 +101,11 @@ fun IncomeScreenUi(
                         key = { it -> it.id }
                     ) {
                         TransactionListItem(
-                            categoryId = it.category.id,
-                            categoryName = it.category.name,
-                            emoji = it.category.emoji,
+                            categoryId = it.categoryId,
+                            categoryName = it.categoryName,
+                            emoji = it.categoryEmoji,
                             amount = it.amount,
-                            currency = it.account.currency,
+                            currency = it.accountCurrency,
                             comment = it.comment,
                             clicked = { navController.navigate("income_detail/${it.id}") }
                         )

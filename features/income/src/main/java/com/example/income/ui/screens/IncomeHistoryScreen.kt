@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.income.ui.model.TransactionUi
 import com.example.network.model.transaction.TransactionResponse
 import com.example.ui.R
 import com.example.ui.components.CustomDatePicker
@@ -74,7 +75,7 @@ fun IncomeHistoryScreen(
             when (uiState) {
                 is UiState.Loading -> LoadingScreen()
                 is UiState.Success -> IncomeHistoryScreenUi(
-                    transactions = (uiState as UiState.Success<List<TransactionResponse>>).data,
+                    transactions = (uiState as UiState.Success<List<TransactionUi>>).data,
                     navController = navController
                 )
                 is UiState.Error -> ErrorScreen(
@@ -121,7 +122,7 @@ fun IncomeHistoryScreen(
 
 @Composable
 fun IncomeHistoryScreenUi(
-    transactions: List<TransactionResponse>,
+    transactions: List<TransactionUi>,
     navController: NavController
 ) {
     LazyColumn(
@@ -132,13 +133,13 @@ fun IncomeHistoryScreenUi(
             key = { it -> it.id }
         ) {
             TransactionListItem(
-                categoryId = it.category.id,
-                categoryName = it.category.name,
-                emoji = it.category.emoji,
+                categoryId = it.categoryId,
+                categoryName = it.categoryName,
+                emoji = it.categoryEmoji,
                 amount = it.amount,
                 currency = "RUB",
                 comment = it.comment,
-                date = it.transactionDate,
+                date = it.dateTime,
                 clicked = { navController.navigate("income_detail/${it.id}")}
             )
         }

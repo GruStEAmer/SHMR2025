@@ -3,7 +3,7 @@ package com.example.income.ui.screens
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.income.domain.repository.IncomeRepository
-import com.example.network.model.transaction.TransactionResponse
+import com.example.income.ui.model.TransactionUi
 import com.example.ui.state.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,8 +17,8 @@ class IncomeHistoryViewModel @Inject constructor(
     val repository: IncomeRepository
 ): ViewModel() {
 
-    private val _incomeUiState = MutableStateFlow<UiState<List<TransactionResponse>>>(UiState.Loading)
-    val incomeUiState: StateFlow<UiState<List<TransactionResponse>>> = _incomeUiState.asStateFlow()
+    private val _incomeUiState = MutableStateFlow<UiState<List<TransactionUi>>>(UiState.Loading)
+    val incomeUiState: StateFlow<UiState<List<TransactionUi>>> = _incomeUiState.asStateFlow()
 
     private val _sumIncome = MutableStateFlow(0.0)
     val sumIncome: StateFlow<Double> = _sumIncome.asStateFlow()
@@ -37,7 +37,7 @@ class IncomeHistoryViewModel @Inject constructor(
             )
 
             if (data.isSuccess) {
-                val filteredListIsIncome = data.getOrNull()!!.filter { it.category.isIncome }
+                val filteredListIsIncome = data.getOrNull()!!
                 _incomeUiState.value = UiState.Success(filteredListIsIncome)
                 _sumIncome.value = filteredListIsIncome.sumOf { it.amount.toDouble() }
             } else {

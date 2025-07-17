@@ -1,6 +1,8 @@
 package com.example.expenses.data.repository
 
 import com.example.expenses.domain.repository.ExpensesRepository
+import com.example.expenses.ui.mapper.toTransactionUi
+import com.example.expenses.ui.model.TransactionUi
 import com.example.network.apiService.TransactionApiService
 import com.example.network.model.transaction.TransactionRequest
 import com.example.network.model.transaction.TransactionResponse
@@ -43,11 +45,11 @@ class ExpensesRepositoryImpl @Inject constructor(
         }
 
 
-        override suspend fun getTransactionById(id: Int): Result<TransactionResponse> {
+        override suspend fun getTransactionById(id: Int): Result<TransactionUi> {
         return try {
             val response = expensesApiService.getTransactionById(id)
             when(response.code()){
-                200 -> Result.success(response.body()!!)
+                200 -> Result.success(response.body()!!.toTransactionUi())
                 else -> Result.failure(Exception("${response.code()}"))
             }
         } catch(e : UnknownHostException){
@@ -61,7 +63,7 @@ class ExpensesRepositoryImpl @Inject constructor(
         accountId: Int,
         startDate: String,
         endDate: String
-    ): Result<List<TransactionResponse>> {
+    ): Result<List<TransactionUi>> {
         return try {
             val response = expensesApiService.getTransactionsByAccountIdWithDate(
                 accountId = accountId,
@@ -69,7 +71,10 @@ class ExpensesRepositoryImpl @Inject constructor(
                 endDate = endDate
             )
             when(response.code()){
-                200 -> Result.success(response.body()!!)
+                200 -> Result.success(response.body()!!
+                    .filter { !it.category.isIncome }
+                    .map{ it.toTransactionUi() }
+                )
                 else -> Result.failure(Exception("${response.code()}"))
             }
         } catch(e : UnknownHostException){
