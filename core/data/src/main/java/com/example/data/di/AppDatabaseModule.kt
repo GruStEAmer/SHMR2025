@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.data.local.dao.AccountDao
 import com.example.data.local.dao.CategoryDao
+import com.example.data.local.dao.TransactionsDao
 import com.example.data.local.database.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -34,5 +35,12 @@ class AppDatabaseModule {
     @Singleton
     fun provideCategoryDao(database: AppDatabase): CategoryDao {
         return database.categoryDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTransactionDao(database: AppDatabase): TransactionsDao {
+        return database.transactionDao()
+
     }
 }

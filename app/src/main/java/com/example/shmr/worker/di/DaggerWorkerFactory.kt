@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class DaggerWorkerFactory @Inject constructor(
     private val accountRepository: AccountRepository,
-    //private val transactionRepository: TransactionRepository,
+    private val transactionRepository: TransactionRepository,
     private val categoryRepository: CategoryRepository
 ) : WorkerFactory() {
 
@@ -27,7 +27,7 @@ class DaggerWorkerFactory @Inject constructor(
                     appContext,
                     workerParameters,
                     accountRepository,
-                    // transactionRepository,
+                    transactionRepository,
                     categoryRepository
                 )
             else -> null

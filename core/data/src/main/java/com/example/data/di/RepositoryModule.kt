@@ -11,6 +11,7 @@ import com.example.data.repository.TransactionRepository
 import com.example.data.repositoryImpl.AccountRepositoryImpl
 import com.example.data.repositoryImpl.CategoryRepositoryImpl
 import com.example.data.repositoryImpl.TransactionRepositoryImpl
+import com.example.data.local.dao.TransactionsDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -18,8 +19,18 @@ import javax.inject.Singleton
 @Module
 class RepositoryModule {
     @[Provides Singleton]
-    fun provideExpensesRepository(transactionApiService: TransactionApiService): TransactionRepository =
-        TransactionRepositoryImpl(transactionApiService = transactionApiService)
+    fun provideExpensesRepository(
+        transactionApiService: TransactionApiService,
+        transactionDao: TransactionsDao,
+        accountDao: AccountDao,
+        categoryDao: CategoryDao
+    ): TransactionRepository =
+        TransactionRepositoryImpl(
+            transactionApiService = transactionApiService,
+            transactionsDao = transactionDao,
+            accountDao = accountDao,
+            categoryDao = categoryDao
+        )
 
     @[Provides Singleton]
     fun provideCategoryRepository(

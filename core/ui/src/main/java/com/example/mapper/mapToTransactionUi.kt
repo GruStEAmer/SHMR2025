@@ -1,5 +1,6 @@
 package com.example.mapper
 
+import com.example.data.local.entity.LocalTransaction
 import com.example.data.network.model.transaction.TransactionResponse
 import com.example.model.TransactionUi
 import java.time.Instant
@@ -38,3 +39,20 @@ fun TransactionResponse.toTransactionUi(): TransactionUi {
         comment = this.comment
     )
 }
+
+fun LocalTransaction.toTransactionUi() =
+    TransactionUi(
+        id = this.id,
+        accountId = this.accountId,
+        categoryId = this.categoryId,
+        accountName = "",
+        categoryName = "",
+        categoryEmoji = "",
+        accountCurrency = "",
+        isIncome = false,
+        amount = this.amount.toString(),
+        date = LocalDate.now(),
+        time = LocalTime.now(),
+        dateTime = "",
+        comment = this.comment
+    )

@@ -17,7 +17,9 @@ import javax.inject.Inject
 class ExpensesViewModel @Inject constructor(
     val repository: TransactionRepository
 ): ViewModel() {
-
+    companion object {
+        const val ACCOUNT_ID = 11
+    }
     private val _expensesUiState = MutableStateFlow<UiState<List<TransactionUi>>>(UiState.Loading)
     val expensesUiState: StateFlow<UiState<List<TransactionUi>>> = _expensesUiState.asStateFlow()
 
@@ -36,7 +38,8 @@ class ExpensesViewModel @Inject constructor(
             _expensesUiState.value = UiState.Loading
             _sumExpenses.value = 0.0
 
-            val data = repository.getTransactionByAccountIdWithDate(
+            val data = repository.getTransactionsByAccountIdWithDate(
+                accountId = ACCOUNT_ID,
                 startDate = startDate.toString(),
                 endDate = endDate.toString()
             )
