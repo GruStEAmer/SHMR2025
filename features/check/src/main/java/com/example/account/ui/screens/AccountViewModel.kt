@@ -2,9 +2,8 @@ package com.example.account.ui.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.data.repository.AccountRepository
-import com.example.data.network.model.account.Account
 import com.example.data.network.model.account.AccountUpdateRequest
+import com.example.data.repository.AccountRepository
 import com.example.mapper.toAccountUi
 import com.example.model.AccountUi
 import com.example.ui.state.UiState
@@ -81,8 +80,8 @@ class AccountViewModel @Inject constructor(
                _accountUiState.value = UiState.Error(
                     putResult.exceptionOrNull() ?: Exception("Неизвестная ошибка при сохранении изменений")
                 )
-                 if(currentData is UiState.Success) {
-                 _accountUiState.value = currentData
+                if(currentData is UiState.Success) {
+                    _accountUiState.value = currentData
                  }
             }
         }

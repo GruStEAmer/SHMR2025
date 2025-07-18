@@ -4,7 +4,6 @@ import com.example.data.local.dao.AccountDao
 import com.example.data.local.entity.LocalAccount
 import com.example.data.mapper.toLocalAccount
 import com.example.data.network.apiService.AccountApiService
-import com.example.data.network.model.account.Account
 import com.example.data.network.model.account.AccountUpdateRequest
 import com.example.data.repository.AccountRepository
 import java.net.UnknownHostException

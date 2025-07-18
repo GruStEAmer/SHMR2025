@@ -1,7 +1,6 @@
 package com.example.data.repository
 
 import com.example.data.local.entity.LocalAccount
-import com.example.data.network.model.account.Account
 import com.example.data.network.model.account.AccountUpdateRequest
 
 interface AccountRepository {

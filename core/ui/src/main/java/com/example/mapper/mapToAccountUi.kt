@@ -24,13 +24,4 @@ fun AccountResponse.toAccountUi() =
         currency = this.currency,
     )
 
-fun AccountResponse.toLocalAccount() =
-    LocalAccount(
-        id = this.id,
-        name = this.name,
-        balance = this.balance,
-        currency = this.currency,
-        isSynced = true,
-        lastModified = System.currentTimeMillis()
-    )
 
