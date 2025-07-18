@@ -10,4 +10,7 @@ interface AccountRepository {
 
     suspend fun refreshAccountById(id: Int): Result<Unit>
 
+    suspend fun getUnsyncedAccounts(): Result<List<LocalAccount>>
+
+    suspend fun syncAccountToServer(account: LocalAccount): Result<Unit>
 }

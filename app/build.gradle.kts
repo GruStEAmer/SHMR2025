@@ -54,6 +54,9 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:data"))
 
+    //Worker
+    implementation(libs.androidx.workmanager.ktx)
+    
     //Dagger 2
     implementation(libs.dagger)
     ksp(libs.dagger.compiler)

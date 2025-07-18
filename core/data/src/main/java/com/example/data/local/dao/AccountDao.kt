@@ -25,4 +25,9 @@ interface AccountDao {
     @Query("DELETE FROM accounts")
     suspend fun deleteAllAccounts()
 
+
+    @Query("SELECT * FROM accounts WHERE isSynced = 0")
+    suspend fun getUnsyncedAccounts(): List<LocalAccount>
+
+
 }

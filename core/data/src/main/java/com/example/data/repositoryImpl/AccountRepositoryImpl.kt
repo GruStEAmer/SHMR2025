@@ -79,4 +79,41 @@ class AccountRepositoryImpl @Inject constructor(
             Result.failure(Exception("Не удалось обновить счет $id: ${e.message}"))
         }
     }
+    override suspend fun getUnsyncedAccounts(): Result<List<LocalAccount>> {
+        return try {
+            Result.success(accountDao.getUnsyncedAccounts())
+        } catch (e: Exception) {
+            Result.failure(Exception("Ошибка получения несинхронизированных аккаунтов из БД: ${e.message}"))
+        }
+    }
+
+    override suspend fun syncAccountToServer(account: LocalAccount): Result<Unit> {
+        if (account.isSynced) {
+            return Result.success(Unit)
+        }
+
+        try {
+            val updateRequest = AccountUpdateRequest(
+                name = account.name,
+                balance = account.balance,
+                currency = account.currency
+            )
+            val response = accountApiService.putAccountById(account.id, updateRequest)
+
+            if (response.isSuccessful) {
+                val syncedAccount = account.copy(isSynced = true, lastModified = System.currentTimeMillis())
+                accountDao.insertAccount(syncedAccount) // insertOrReplace обновит запись
+                return Result.success(Unit)
+            } else {
+                return Result.failure(
+                    Exception("Ошибка сервера ${response.code()} при синхронизации счета ID ${account.id}: ${response.message()}")
+                )
+            }
+        } catch (e: UnknownHostException) {
+            return Result.failure(Exception("Нет подключения к интернету для синхронизации счета ID ${account.id}."))
+        } catch (e: Exception) {
+            return Result.failure(Exception("Ошибка при синхронизации счета ID ${account.id}: ${e.message}"))
+        }
+    }
+
 }

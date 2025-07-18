@@ -8,6 +8,8 @@ import com.example.expenses.di.deps.ExpensesDeps
 import com.example.income.di.deps.IncomeDeps
 import com.example.data.di.AppDatabaseModule
 import com.example.data.di.RepositoryModule
+import com.example.shmr.MainApplication
+import com.example.shmr.worker.di.WorkerModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -17,7 +19,8 @@ import javax.inject.Singleton
     modules = [
         NetworkModule::class,
         AppDatabaseModule::class,
-        RepositoryModule::class
+        RepositoryModule::class,
+        WorkerModule::class
     ]
 )
 interface AppComponent: CategoriesDeps, AccountDeps, ExpensesDeps, IncomeDeps {
@@ -27,4 +30,6 @@ interface AppComponent: CategoriesDeps, AccountDeps, ExpensesDeps, IncomeDeps {
     interface Factory {
         fun create(@BindsInstance context: Context): AppComponent
     }
+
+    fun inject(app: MainApplication)
 }
