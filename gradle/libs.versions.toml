@@ -20,7 +20,7 @@ serialization = "2.1.21"
 appcompat = "1.6.1"
 material = "1.10.0"
 ksp = "2.1.21-2.0.1"
-room = "2.6.1"
+room = "2.7.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

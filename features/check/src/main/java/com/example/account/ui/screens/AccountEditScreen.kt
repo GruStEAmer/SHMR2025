@@ -42,21 +42,21 @@ fun AccountEditScreen(
     navigation: () -> Unit,
     accountViewModel: AccountViewModel
 ) {
-    val uiState: UiState<AccountUi> by accountViewModel.checkUiState.collectAsState()
+    val uiState: UiState<AccountUi> by accountViewModel.accountUiState.collectAsState()
 
     when(uiState) {
         is UiState.Loading -> LoadingScreen()
         is UiState.Success -> AccountEditScreenUi(
             account = (uiState as UiState.Success<AccountUi>).data,
             onSaveClick = { name, balance ->
-                accountViewModel.putAccount(name, balance)
+                accountViewModel.updateAccount(name, balance)
                 navigation()
             },
             navigation = navigation
         )
         is UiState.Error -> ErrorScreen(
             message = (uiState as UiState.Error).error.message ?: "Unknown error",
-            reloadData = { accountViewModel.getAccountInfo() }
+            reloadData = { accountViewModel.loadAccountData() }
         )
     }
 }

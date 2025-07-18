@@ -18,13 +18,13 @@ interface AccountApiService {
     suspend fun getAccounts(): Response<List<Account>>
 
     @POST("accounts")
-    suspend fun postAccount(@Body accountUpdateRequest: AccountUpdateRequest): Response<Account>
+    suspend fun postAccount(@Body accountCreateRequest: AccountCreateRequest): Response<Account>
 
     @GET("accounts/{id}")
     suspend fun getAccountById(@Path("id") id: Int): Response<AccountResponse>
 
     @PUT("accounts/{id}")
-    suspend fun putAccountById(@Path("id") id: Int, @Body accountCreateRequest: AccountCreateRequest): Response<AccountResponse>
+    suspend fun putAccountById(@Path("id") id: Int, @Body accountUpdateRequest: AccountUpdateRequest): Response<AccountResponse>
 
     @DELETE("accounts/{id}")
     suspend fun deleteAccountById(@Path("id") id: Int): Response<Unit>

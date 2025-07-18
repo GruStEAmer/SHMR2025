@@ -30,6 +30,7 @@ fun TransactionResponse.toTransactionUi(): TransactionUi{
         categoryName = this.category.name,
         categoryEmoji = this.category.emoji,
         accountCurrency = this.account.currency,
+        isIncome = this.category.isIncome,
         amount = this.amount,
         date = date,
         time = time,

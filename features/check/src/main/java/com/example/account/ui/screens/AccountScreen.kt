@@ -27,14 +27,14 @@ fun AccountScreen(
     navigation: () -> Unit,
     accountViewModel: AccountViewModel
 ) {
-    val uiState:UiState<AccountUi> by accountViewModel.checkUiState.collectAsState()
+    val uiState:UiState<AccountUi> by accountViewModel.accountUiState.collectAsState()
     when(uiState){
         is UiState.Loading -> LoadingScreen()
         is UiState.Success -> AccountScreenUi(
             account = (uiState as UiState.Success<AccountUi>).data,
             navigation = navigation
         )
-        is UiState.Error -> ErrorScreen(message =  (uiState as UiState.Error).error.message, reloadData = { accountViewModel.getAccountInfo() })
+        is UiState.Error -> ErrorScreen(message =  (uiState as UiState.Error).error.message, reloadData = { accountViewModel.loadAccountData() })
     }
 }
 

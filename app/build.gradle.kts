@@ -14,6 +14,7 @@ android {
 
     buildFeatures{
         buildConfig = true
+        compose = true
     }
 
     defaultConfig {
@@ -43,9 +44,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
     }
 }
 
