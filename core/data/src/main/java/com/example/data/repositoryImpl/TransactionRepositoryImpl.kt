@@ -69,9 +69,7 @@ class TransactionRepositoryImpl @Inject constructor(
                 endDate = endDate
             )
             when(response.code()){
-                200 -> Result.success(response.body()!!
-                    .filter { !it.category.isIncome }
-                )
+                200 -> Result.success(response.body()!!)
                 else -> Result.failure(Exception("${response.code()}"))
             }
         } catch(e : UnknownHostException){

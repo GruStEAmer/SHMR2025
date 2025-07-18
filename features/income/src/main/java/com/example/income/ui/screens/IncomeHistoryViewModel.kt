@@ -38,7 +38,7 @@ class IncomeHistoryViewModel @Inject constructor(
             )
 
             if (data.isSuccess) {
-                val filteredListIsIncome = data.getOrNull()?.map { it.toTransactionUi() } ?: emptyList()
+                val filteredListIsIncome = data.getOrNull()!!.filter{ it.category.isIncome }.map { it.toTransactionUi() }
                 _incomeUiState.value = UiState.Success(filteredListIsIncome)
                 _sumIncome.value = filteredListIsIncome.sumOf { it.amount.toDouble() }
             } else {

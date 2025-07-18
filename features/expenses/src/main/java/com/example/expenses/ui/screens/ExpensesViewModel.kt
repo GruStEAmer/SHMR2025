@@ -42,7 +42,7 @@ class ExpensesViewModel @Inject constructor(
             )
 
             if (data.isSuccess) {
-                val transactions = data.getOrNull()!!.map { it.toTransactionUi() }
+                val transactions = data.getOrNull()!!.filter{ !it.category.isIncome }.map { it.toTransactionUi() }
                 _expensesUiState.value = UiState.Success(transactions)
                 _sumExpenses.value = transactions.sumOf { it.amount.toDouble() }
             } else {
