@@ -2,8 +2,9 @@ package com.example.income.ui.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.income.domain.repository.IncomeRepository
-import com.example.income.ui.model.TransactionUi
+import com.example.data.repository.TransactionRepository
+import com.example.mapper.toTransactionUi
+import com.example.model.TransactionUi
 import com.example.ui.state.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 class IncomeHistoryViewModel @Inject constructor(
-    val repository: IncomeRepository
+    val repository: TransactionRepository
 ): ViewModel() {
 
     private val _incomeUiState = MutableStateFlow<UiState<List<TransactionUi>>>(UiState.Loading)
@@ -37,7 +38,7 @@ class IncomeHistoryViewModel @Inject constructor(
             )
 
             if (data.isSuccess) {
-                val filteredListIsIncome = data.getOrNull()!!
+                val filteredListIsIncome = data.getOrNull()?.map { it.toTransactionUi() } ?: emptyList()
                 _incomeUiState.value = UiState.Success(filteredListIsIncome)
                 _sumIncome.value = filteredListIsIncome.sumOf { it.amount.toDouble() }
             } else {

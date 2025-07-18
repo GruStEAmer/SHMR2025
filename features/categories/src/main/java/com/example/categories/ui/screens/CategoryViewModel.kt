@@ -2,9 +2,9 @@ package com.example.categories.ui.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.categories.domain.repository.CategoryRepository
-import com.example.categories.ui.model.CategoryUi
-import com.example.network.model.category.Category
+import com.example.data.repository.CategoryRepository
+import com.example.mapper.toCategoryUi
+import com.example.model.CategoryUi
 import com.example.ui.state.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,8 +32,8 @@ class CategoryViewModel @Inject constructor(
             _categoryUiState.value = UiState.Loading
             val data = repository.getCategories()
             if (data.isSuccess) {
-                _categoryUiState.value = UiState.Success(data.getOrNull()!!)
-                _targetCategoryUiState.value = data.getOrNull()!!
+                _targetCategoryUiState.value = data.getOrNull()!!.map{ it.toCategoryUi() }
+                _categoryUiState.value = UiState.Success(_targetCategoryUiState.value)
             } else {
                 _categoryUiState.value = UiState.Error(data.exceptionOrNull()!!)
             }

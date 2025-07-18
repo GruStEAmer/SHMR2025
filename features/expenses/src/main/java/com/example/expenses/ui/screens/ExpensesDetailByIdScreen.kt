@@ -22,8 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.expenses.ui.model.TransactionUi
-import com.example.network.model.transaction.TransactionRequest
+import com.example.data.network.model.transaction.TransactionRequest
+import com.example.model.TransactionUi
 import com.example.ui.R
 import com.example.ui.components.CustomDatePicker
 import com.example.ui.components.CustomTimePicker

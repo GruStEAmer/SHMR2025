@@ -1,11 +1,8 @@
 package com.example.account.di.deps
 
-import com.example.local.dao.AccountDao
-import com.example.network.apiService.AccountApiService
+import com.example.data.repository.AccountRepository
 
 interface AccountDeps {
 
-    val accountApiService: AccountApiService
-
-    val accountDao: AccountDao
+    val accountRepository: AccountRepository
 }

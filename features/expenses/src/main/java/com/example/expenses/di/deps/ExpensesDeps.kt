@@ -1,9 +1,8 @@
 package com.example.expenses.di.deps
 
-import com.example.network.apiService.TransactionApiService
-import retrofit2.Retrofit
+import com.example.data.repository.TransactionRepository
 
 interface ExpensesDeps {
 
-    val transactionApiService: TransactionApiService
+    val transactionRepository: TransactionRepository
 }

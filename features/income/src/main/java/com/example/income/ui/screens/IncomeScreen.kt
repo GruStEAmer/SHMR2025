@@ -21,8 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.income.navigation.IncomeNavigationModel
-import com.example.income.ui.model.TransactionUi
-import com.example.network.model.transaction.TransactionResponse
+import com.example.model.TransactionUi
 import com.example.ui.R
 import com.example.ui.components.CircleButton
 import com.example.ui.components.ErrorScreen

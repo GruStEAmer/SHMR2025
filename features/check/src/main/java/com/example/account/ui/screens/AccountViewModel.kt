@@ -2,10 +2,11 @@ package com.example.account.ui.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.account.domain.repository.AccountRepository
-import com.example.account.ui.model.AccountUi
-import com.example.network.model.account.AccountCreateRequest
-import com.example.network.model.account.AccountUpdateRequest
+import com.example.data.repository.AccountRepository
+import com.example.data.network.model.account.Account
+import com.example.data.network.model.account.AccountUpdateRequest
+import com.example.mapper.toAccountUi
+import com.example.model.AccountUi
 import com.example.ui.state.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +35,7 @@ class AccountViewModel @Inject constructor(
             _accountUiState.value = UiState.Loading
             val result = repository.getAccountById(ACCOUNT_ID)
             if (result.isSuccess) {
-                _accountUiState.value = UiState.Success(result.getOrThrow())
+                _accountUiState.value = UiState.Success(result.getOrThrow().toAccountUi())
             } else {
                 _accountUiState.value = UiState.Error(result.exceptionOrNull() ?: Exception("Неизвестная ошибка загрузки счета"))
             }
@@ -48,7 +49,7 @@ class AccountViewModel @Inject constructor(
             if (refreshResult.isSuccess) {
                 val dataResult = repository.getAccountById(ACCOUNT_ID)
                 if (dataResult.isSuccess) {
-                    _accountUiState.value = UiState.Success(dataResult.getOrThrow())
+                    _accountUiState.value = UiState.Success(dataResult.getOrThrow().toAccountUi())
                 } else {
                     _accountUiState.value = UiState.Error(dataResult.exceptionOrNull() ?: Exception("Ошибка загрузки данных после обновления"))
                 }
@@ -72,7 +73,7 @@ class AccountViewModel @Inject constructor(
             if (putResult.isSuccess) {
                 val dataResult = repository.getAccountById(ACCOUNT_ID)
                 if (dataResult.isSuccess) {
-                    _accountUiState.value = UiState.Success(dataResult.getOrThrow())
+                    _accountUiState.value = UiState.Success(dataResult.getOrThrow().toAccountUi())
                 } else {
                     _accountUiState.value = UiState.Error(dataResult.exceptionOrNull() ?: Exception("Ошибка загрузки данных после сохранения"))
                 }
@@ -80,7 +81,7 @@ class AccountViewModel @Inject constructor(
                _accountUiState.value = UiState.Error(
                     putResult.exceptionOrNull() ?: Exception("Неизвестная ошибка при сохранении изменений")
                 )
-                 if (currentData is UiState.Success) {
+                 if(currentData is UiState.Success) {
                  _accountUiState.value = currentData
                  }
             }

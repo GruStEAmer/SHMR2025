@@ -36,6 +36,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:network"))
     implementation(project(":core:local"))
+    implementation(project(":core:data"))
 
     // Dagger 2
     implementation(libs.dagger)

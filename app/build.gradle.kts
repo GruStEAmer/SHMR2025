@@ -53,11 +53,8 @@ dependencies {
     implementation(project(":features:expenses"))
     implementation(project(":features:check"))
     implementation(project(":features:categories"))
-    implementation(project(":core:network"))
     implementation(project(":core:ui"))
-    implementation(project(":core:local"))
-
-
+    implementation(project(":core:data"))
 
     //Dagger 2
     implementation(libs.dagger)

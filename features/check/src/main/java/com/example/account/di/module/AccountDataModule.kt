@@ -1,26 +1,15 @@
 package com.example.account.di.module
 
-import com.example.account.data.repository.AccountRepositoryImpl
 import com.example.account.di.annotations.AccountScope
-import com.example.account.domain.repository.AccountRepository
 import com.example.account.ui.screens.AccountViewModel
-import com.example.local.dao.AccountDao
-import com.example.network.apiService.AccountApiService
+import com.example.data.repository.AccountRepository
 import dagger.Module
 import dagger.Provides
 
 @Module
 internal class AccountDataModule {
 
-    @[Provides AccountScope]
-    fun provideAccountRepository(
-        accountApiService: AccountApiService,
-        accountDao: AccountDao
-    ): AccountRepository =
-        AccountRepositoryImpl(
-            accountApiService = accountApiService,
-            accountDao = accountDao
-        )
+
 
     @[Provides AccountScope]
     fun provideAccountViewModel(accountRepository: AccountRepository) =

@@ -1,8 +1,8 @@
 package com.example.income.di.deps
 
-import com.example.network.apiService.TransactionApiService
+import com.example.data.repository.TransactionRepository
 
 interface IncomeDeps {
 
-    val transactionApiService: TransactionApiService
+    val transactionRepository: TransactionRepository
 }

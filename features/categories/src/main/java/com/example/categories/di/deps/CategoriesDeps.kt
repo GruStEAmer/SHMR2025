@@ -1,9 +1,9 @@
 package com.example.categories.di.deps
 
-import com.example.network.apiService.CategoryApiService
+import com.example.data.repository.CategoryRepository
 
 
 interface CategoriesDeps {
 
-    var categoryApiService: CategoryApiService
+    val categoryRepository: CategoryRepository
 }
