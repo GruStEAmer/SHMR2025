@@ -5,13 +5,14 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.data.repository.AccountRepository
+import com.example.data.repository.CategoryRepository
 
 class SyncWorker(
     appContext: Context,
     workerParams: WorkerParameters,
-    private val accountRepository: AccountRepository
+    private val accountRepository: AccountRepository,
     // private val transactionRepository: TransactionRepository,
-    // private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository
 ) : CoroutineWorker(appContext, workerParams) {
 
     companion object {
@@ -63,25 +64,9 @@ class SyncWorker(
             }
             */
 
-            // --- Синхронизация Категорий (когда будет готово) ---
-            /*
+
             Log.d(TAG, "Начало синхронизации категорий...")
-            val unsyncedCategories = categoryRepository.getUnsyncedCategories()
-            if (unsyncedCategories.isNotEmpty()) {
-                Log.d(TAG, "Найдено ${unsyncedCategories.size} несинхронизированных категорий.")
-                for (category in unsyncedCategories) {
-                    val syncResult = categoryRepository.syncCategoryToServer(category)
-                    if (syncResult.isFailure) {
-                        overallSuccess = false
-                        Log.e(TAG, "Ошибка синхронизации категории ID ${category.id}: ${syncResult.exceptionOrNull()?.message}")
-                    } else {
-                        Log.d(TAG, "Категория ID ${category.id} успешно синхронизирована.")
-                    }
-                }
-            } else {
-                Log.d(TAG, "Несинхронизированных категорий не найдено.")
-            }
-            */
+            val unsyncedCategories = categoryRepository.refreshAllCategoriesFromNetwork()
 
             return if (overallSuccess) {
                 Log.d(TAG, "Вся синхронизация данных успешно завершена.")

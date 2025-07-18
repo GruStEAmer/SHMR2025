@@ -13,7 +13,7 @@ import javax.inject.Inject
 class DaggerWorkerFactory @Inject constructor(
     private val accountRepository: AccountRepository,
     //private val transactionRepository: TransactionRepository,
-    //private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository
 ) : WorkerFactory() {
 
     override fun createWorker(
@@ -26,9 +26,9 @@ class DaggerWorkerFactory @Inject constructor(
                 SyncWorker(
                     appContext,
                     workerParameters,
-                    accountRepository
+                    accountRepository,
                     // transactionRepository,
-                    // categoryRepository
+                    categoryRepository
                 )
             else -> null
         }

@@ -1,9 +1,12 @@
 package com.example.data.repository
 
-import com.example.data.network.model.category.Category
+import com.example.data.local.entity.LocalCategory
 
 interface CategoryRepository {
-    suspend fun getCategories():Result<List<Category>>
+    suspend fun getCategories(): Result<List<LocalCategory>>
 
-    suspend fun getCategoriesByType(isIncome: Boolean) : Result<List<Category>>
+    suspend fun getCategoriesByType(isIncome: Boolean): Result<List<LocalCategory>>
+
+    suspend fun refreshAllCategoriesFromNetwork(): Result<Unit>
+
 }

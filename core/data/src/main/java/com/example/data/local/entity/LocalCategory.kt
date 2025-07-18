@@ -4,9 +4,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "categories")
-data class CategoryEntity(
+data class LocalCategory(
     @PrimaryKey val id: Int,
     val name: String,
     val emoji: String,
-    val isIncome: Boolean
+    val isIncome: Boolean,
+    val isSynced: Boolean
 )

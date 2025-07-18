@@ -1,6 +1,7 @@
 package com.example.data.di
 
 import com.example.data.local.dao.AccountDao
+import com.example.data.local.dao.CategoryDao
 import com.example.data.network.apiService.AccountApiService
 import com.example.data.network.apiService.CategoryApiService
 import com.example.data.network.apiService.TransactionApiService
@@ -21,8 +22,14 @@ class RepositoryModule {
         TransactionRepositoryImpl(transactionApiService = transactionApiService)
 
     @[Provides Singleton]
-    fun provideCategoryRepository(categoryApiService: CategoryApiService): CategoryRepository =
-        CategoryRepositoryImpl(categoryApiService = categoryApiService)
+    fun provideCategoryRepository(
+        categoryApiService: CategoryApiService,
+        categoryDao: CategoryDao
+    ): CategoryRepository =
+        CategoryRepositoryImpl(
+            categoryApiService = categoryApiService,
+            categoryDao = categoryDao
+        )
 
     @[Provides Singleton]
     fun provideAccountRepository(
