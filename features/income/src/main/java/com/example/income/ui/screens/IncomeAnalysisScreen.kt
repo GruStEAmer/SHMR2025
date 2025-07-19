@@ -71,7 +71,7 @@ fun IncomeAnalysisScreen(
     Scaffold(
         topBar = {
             AppTopBar(
-                title = "Моя история",
+                title = "Анализ",
                 startIcon = R.drawable.ic_return,
                 startNavigation = { navController.popBackStack() }
             )
