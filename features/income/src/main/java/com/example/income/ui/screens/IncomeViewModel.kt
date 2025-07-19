@@ -28,7 +28,7 @@ class IncomeViewModel @Inject constructor(
 
     fun getIncomes(
         startDate: LocalDate = LocalDate.now(),
-        endDate: LocalDate = LocalDate.now(),
+        endDate: LocalDate = LocalDate.now().plusDays(1),
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             _sumIncome.value = 0.0

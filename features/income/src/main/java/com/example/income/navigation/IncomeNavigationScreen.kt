@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.income.di.component.IncomeComponent
 import com.example.income.di.utils.rememberIncomeComponent
+import com.example.income.ui.screens.IncomeAnalysisScreen
 import com.example.income.ui.screens.IncomeDetailByIdScreen
 import com.example.income.ui.screens.IncomeHistoryScreen
 import com.example.income.ui.screens.IncomeScreen
@@ -47,5 +48,12 @@ fun IncomeNavigationScreen(
                 navigation = { navController.popBackStack() }
             )
         }
+        composable(route = IncomeNavigationModel.IncomeAnalysis.route){
+            IncomeAnalysisScreen(
+                factory = factory,
+                navController = navController
+            )
+        }
+
     }
 }

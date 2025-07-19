@@ -1,10 +1,16 @@
 package com.example.income.ui.screens
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,12 +19,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.income.navigation.IncomeNavigationModel
 import com.example.model.TransactionUi
 import com.example.ui.R
 import com.example.ui.components.CustomDatePicker
@@ -33,11 +42,11 @@ import java.time.LocalDate
 import java.time.ZoneId
 
 @Composable
-fun IncomeHistoryScreen(
+fun IncomeAnalysisScreen(
     factory: ViewModelProvider.Factory,
     navController: NavController
 ) {
-    val incomeViewModel: IncomeHistoryViewModel = viewModel(factory = factory)
+    val incomeViewModel: IncomeAnalysisViewModel = viewModel(factory = factory)
     val uiState by incomeViewModel.incomeUiState.collectAsState()
     val sumTransaction by incomeViewModel.sumIncome.collectAsState()
 
@@ -55,13 +64,12 @@ fun IncomeHistoryScreen(
             AppTopBar(
                 title = "Моя история",
                 startIcon = R.drawable.ic_return,
-                endIcon = R.drawable.ic_analysis,
-                startNavigation = { navController.popBackStack() },
-                endNavigation = { navController.navigate(IncomeNavigationModel.IncomeAnalysis.route) }
+                startNavigation = { navController.popBackStack() }
             )
         }
     ) { innerPadding ->
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
@@ -74,9 +82,21 @@ fun IncomeHistoryScreen(
                 balance = sumTransaction.toString()
             )
 
+            Icon(
+                painter = painterResource(R.drawable.round_analysis),
+                contentDescription = "",
+                modifier = Modifier
+                    .clip(shape = CircleShape)
+                    .size(200.dp)
+                    .clickable{}
+                ,
+                tint = Color.Unspecified
+            )
+            HorizontalDivider()
+
             when (uiState) {
                 is UiState.Loading -> LoadingScreen()
-                is UiState.Success -> IncomeHistoryScreenUi(
+                is UiState.Success -> IncomeAnalysisScreenUi(
                     transactions = (uiState as UiState.Success<List<TransactionUi>>).data,
                     navController = navController
                 )
@@ -87,8 +107,7 @@ fun IncomeHistoryScreen(
                             startDate,
                             endDate
                         )
-                    },
-                    modifier = Modifier.padding(60.dp)
+                    }
                 )
             }
         }
@@ -124,7 +143,7 @@ fun IncomeHistoryScreen(
 }
 
 @Composable
-fun IncomeHistoryScreenUi(
+fun IncomeAnalysisScreenUi(
     transactions: List<TransactionUi>,
     navController: NavController
 ) {

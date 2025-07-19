@@ -43,27 +43,6 @@ fun ExpensesScreen(
     LaunchedEffect(Unit) {
         expensesViewModel.getTransactions()
     }
-
-    when (uiState) {
-        is UiState.Loading -> LoadingScreen()
-        is UiState.Success -> ExpensesScreenUi(
-            transactions = (uiState as UiState.Success<List<TransactionUi>>).data,
-            sum = sumOfTransaction,
-            navController = navController
-        )
-        is UiState.Error -> ErrorScreen(
-            message = (uiState as UiState.Error).error.message,
-            reloadData = { expensesViewModel.getTransactions() }
-        )
-    }
-}
-
-@Composable
-fun ExpensesScreenUi(
-    transactions: List<TransactionUi>,
-    sum: Double,
-    navController: NavController
-) {
     Scaffold(
         topBar = {
             AppTopBar(
@@ -93,37 +72,56 @@ fun ExpensesScreenUi(
             ) {
                 AccountListItem(
                     "Всего",
-                    "$sum",
+                    "$sumOfTransaction",
                     "RUB"
                 )
 
                 HorizontalDivider()
-
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    items(
-                        items = transactions,
-                        key = { it -> it.id }
-                    ) {
-                        TransactionListItem(
-                            categoryId = it.categoryId,
-                            categoryName = it.categoryName,
-                            emoji = it.categoryEmoji,
-                            amount = it.amount,
-                            currency = it.accountCurrency,
-                            comment = it.comment,
-                            clicked = {
-                                navController.navigate("expenses_detail/${it.id}")
-                            }
-                        )
-                    }
+                when (uiState) {
+                    is UiState.Loading -> LoadingScreen()
+                    is UiState.Success -> ExpensesScreenUi(
+                        transactions = (uiState as UiState.Success<List<TransactionUi>>).data,
+                        navController = navController
+                    )
+                    is UiState.Error -> ErrorScreen(
+                        message = (uiState as UiState.Error).error.message,
+                        reloadData = { expensesViewModel.getTransactions() },
+                        modifier = Modifier.padding(innerPadding)
+                    )
                 }
+
             }
             CircleButton(Modifier
                 .align(Alignment.BottomEnd)
                 .padding(bottom = 100.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun ExpensesScreenUi(
+    transactions: List<TransactionUi>,
+    navController: NavController
+) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        items(
+            items = transactions,
+            key = { it -> it.id }
+        ) {
+            TransactionListItem(
+                categoryId = it.categoryId,
+                categoryName = it.categoryName,
+                emoji = it.categoryEmoji,
+                amount = it.amount,
+                currency = it.accountCurrency,
+                comment = it.comment,
+                clicked = {
+                    navController.navigate("expenses_detail/${it.id}")
+                }
             )
         }
     }
