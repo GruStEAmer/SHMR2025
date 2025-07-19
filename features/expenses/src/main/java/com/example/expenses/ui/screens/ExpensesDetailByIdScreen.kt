@@ -22,8 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.expenses.data.model.TransactionRequest
-import com.example.expenses.ui.model.TransactionResponseUi
+import com.example.data.network.model.transaction.TransactionRequest
+import com.example.model.TransactionUi
 import com.example.ui.R
 import com.example.ui.components.CustomDatePicker
 import com.example.ui.components.CustomTimePicker
@@ -32,7 +32,6 @@ import com.example.ui.components.LoadingScreen
 import com.example.ui.components.listItems.DetailListItem
 import com.example.ui.navigationBar.AppTopBar
 import com.example.ui.state.UiState
-import kotlinx.coroutines.delay
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
@@ -55,7 +54,7 @@ fun ExpensesDetailByIdScreen(
     when(transaction){
         is UiState.Loading -> LoadingScreen()
         is UiState.Success -> ExpensesDetailByIdScreenUi(
-            transaction = (transaction as UiState.Success<TransactionResponseUi>).data,
+            transaction = (transaction as UiState.Success<TransactionUi>).data,
             putTransaction = { x, y->
                 expensesViewModel.putTransactionById(x,y)},
             navigation = navigation
@@ -71,7 +70,7 @@ fun ExpensesDetailByIdScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpensesDetailByIdScreenUi(
-    transaction: TransactionResponseUi,
+    transaction: TransactionUi,
     putTransaction: (Int, TransactionRequest) -> Unit,
     navigation: () -> Unit
 ) {

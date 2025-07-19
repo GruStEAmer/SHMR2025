@@ -2,8 +2,9 @@ package com.example.income.ui.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.income.data.model.TransactionResponse
-import com.example.income.domain.repository.IncomeRepository
+import com.example.data.repository.TransactionRepository
+import com.example.mapper.toTransactionUi
+import com.example.model.TransactionUi
 import com.example.ui.state.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,11 +15,14 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 class IncomeHistoryViewModel @Inject constructor(
-    val repository: IncomeRepository
+    val repository: TransactionRepository
 ): ViewModel() {
+    companion object {
+        const val ACCOUNT_ID = 11
+    }
 
-    private val _incomeUiState = MutableStateFlow<UiState<List<TransactionResponse>>>(UiState.Loading)
-    val incomeUiState: StateFlow<UiState<List<TransactionResponse>>> = _incomeUiState.asStateFlow()
+    private val _incomeUiState = MutableStateFlow<UiState<List<TransactionUi>>>(UiState.Loading)
+    val incomeUiState: StateFlow<UiState<List<TransactionUi>>> = _incomeUiState.asStateFlow()
 
     private val _sumIncome = MutableStateFlow(0.0)
     val sumIncome: StateFlow<Double> = _sumIncome.asStateFlow()
@@ -31,13 +35,14 @@ class IncomeHistoryViewModel @Inject constructor(
             _sumIncome.value = 0.0
             _incomeUiState.value = UiState.Loading
 
-            val data = repository.getTransactionByAccountIdWithDate(
+            val data = repository.getTransactionsByAccountIdWithDate(
+                ACCOUNT_ID,
                 startDate = startDate.toString(),
-                endDate = endDate.toString()
+                endDate = endDate.plusDays(1).toString()
             )
 
             if (data.isSuccess) {
-                val filteredListIsIncome = data.getOrNull()!!.filter { it.category.isIncome }
+                val filteredListIsIncome = data.getOrNull()!!.filter{ it.category.isIncome }.map { it.toTransactionUi() }
                 _incomeUiState.value = UiState.Success(filteredListIsIncome)
                 _sumIncome.value = filteredListIsIncome.sumOf { it.amount.toDouble() }
             } else {

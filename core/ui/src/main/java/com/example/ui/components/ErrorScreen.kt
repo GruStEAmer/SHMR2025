@@ -24,7 +24,8 @@ import com.example.ui.theme.Green
 @Composable
 fun ErrorScreen(
     message: String?,
-    reloadData: () -> Unit
+    reloadData: () -> Unit,
+    modifier:Modifier = Modifier
 ){
     var counter by remember { mutableIntStateOf(0) }
     val snackBarHostState = remember { SnackbarHostState() }
@@ -41,7 +42,7 @@ fun ErrorScreen(
     }
 
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
     ){
         SnackbarHost(
             hostState = snackBarHostState,

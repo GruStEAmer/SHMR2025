@@ -14,10 +14,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.income.data.model.TransactionResponse
+import com.example.income.navigation.IncomeNavigationModel
+import com.example.model.TransactionUi
 import com.example.ui.R
 import com.example.ui.components.CustomDatePicker
 import com.example.ui.components.ErrorScreen
@@ -54,7 +56,8 @@ fun IncomeHistoryScreen(
                 title = "Моя история",
                 startIcon = R.drawable.ic_return,
                 endIcon = R.drawable.ic_analysis,
-                startNavigation = { navController.popBackStack() }
+                startNavigation = { navController.popBackStack() },
+                endNavigation = { navController.navigate(IncomeNavigationModel.IncomeAnalysis.route) }
             )
         }
     ) { innerPadding ->
@@ -74,7 +77,7 @@ fun IncomeHistoryScreen(
             when (uiState) {
                 is UiState.Loading -> LoadingScreen()
                 is UiState.Success -> IncomeHistoryScreenUi(
-                    transactions = (uiState as UiState.Success<List<TransactionResponse>>).data,
+                    transactions = (uiState as UiState.Success<List<TransactionUi>>).data,
                     navController = navController
                 )
                 is UiState.Error -> ErrorScreen(
@@ -84,7 +87,8 @@ fun IncomeHistoryScreen(
                             startDate,
                             endDate
                         )
-                    }
+                    },
+                    modifier = Modifier.padding(60.dp)
                 )
             }
         }
@@ -121,7 +125,7 @@ fun IncomeHistoryScreen(
 
 @Composable
 fun IncomeHistoryScreenUi(
-    transactions: List<TransactionResponse>,
+    transactions: List<TransactionUi>,
     navController: NavController
 ) {
     LazyColumn(
@@ -132,13 +136,13 @@ fun IncomeHistoryScreenUi(
             key = { it -> it.id }
         ) {
             TransactionListItem(
-                categoryId = it.category.id,
-                categoryName = it.category.name,
-                emoji = it.category.emoji,
+                categoryId = it.categoryId,
+                categoryName = it.categoryName,
+                emoji = it.categoryEmoji,
                 amount = it.amount,
                 currency = "RUB",
                 comment = it.comment,
-                date = it.transactionDate,
+                date = it.dateTime,
                 clicked = { navController.navigate("income_detail/${it.id}")}
             )
         }

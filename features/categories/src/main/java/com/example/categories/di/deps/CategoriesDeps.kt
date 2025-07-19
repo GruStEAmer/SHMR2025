@@ -1,8 +1,9 @@
 package com.example.categories.di.deps
 
-import retrofit2.Retrofit
+import com.example.data.repository.CategoryRepository
+
 
 interface CategoriesDeps {
 
-    val retrofit: Retrofit
+    val categoryRepository: CategoryRepository
 }

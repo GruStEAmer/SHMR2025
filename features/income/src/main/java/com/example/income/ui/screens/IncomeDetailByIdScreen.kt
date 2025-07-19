@@ -22,8 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.income.data.model.TransactionRequest
-import com.example.income.ui.model.TransactionResponseUi
+import com.example.data.network.model.transaction.TransactionRequest
+import com.example.model.TransactionUi
 import com.example.ui.R
 import com.example.ui.components.CustomDatePicker
 import com.example.ui.components.CustomTimePicker
@@ -54,7 +54,7 @@ fun IncomeDetailByIdScreen(
     when(transaction){
         is UiState.Loading -> LoadingScreen()
         is UiState.Success -> ExpensesDetailByIdScreenUi(
-            transaction = (transaction as UiState.Success<TransactionResponseUi>).data,
+            transaction = (transaction as UiState.Success<TransactionUi>).data,
             putTransaction = { x, y->
                 incomeViewModel.putTransactionById(x,y)},
             navigation = navigation
@@ -70,7 +70,7 @@ fun IncomeDetailByIdScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpensesDetailByIdScreenUi(
-    transaction: TransactionResponseUi,
+    transaction: TransactionUi,
     putTransaction: (Int, TransactionRequest) -> Unit,
     navigation: () -> Unit
 ) {

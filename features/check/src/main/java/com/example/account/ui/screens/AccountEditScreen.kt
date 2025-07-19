@@ -30,8 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.account.data.model.AccountResponse
+import com.example.model.AccountUi
 import com.example.ui.R
 import com.example.ui.components.ErrorScreen
 import com.example.ui.components.LoadingScreen
@@ -43,28 +42,28 @@ fun AccountEditScreen(
     navigation: () -> Unit,
     accountViewModel: AccountViewModel
 ) {
-    val uiState: UiState<AccountResponse> by accountViewModel.checkUiState.collectAsState()
+    val uiState: UiState<AccountUi> by accountViewModel.accountUiState.collectAsState()
 
     when(uiState) {
         is UiState.Loading -> LoadingScreen()
         is UiState.Success -> AccountEditScreenUi(
-            account = (uiState as UiState.Success<AccountResponse>).data,
+            account = (uiState as UiState.Success<AccountUi>).data,
             onSaveClick = { name, balance ->
-                accountViewModel.putAccount(name, balance)
+                accountViewModel.updateAccount(name, balance)
                 navigation()
             },
             navigation = navigation
         )
         is UiState.Error -> ErrorScreen(
             message = (uiState as UiState.Error).error.message ?: "Unknown error",
-            reloadData = { accountViewModel.getAccountInfo() }
+            reloadData = { accountViewModel.loadAccountData() }
         )
     }
 }
 
 @Composable
 fun AccountEditScreenUi(
-    account: AccountResponse,
+    account: AccountUi,
     onSaveClick: (String, String) -> Unit,
     navigation: () -> Unit = {}
 ) {

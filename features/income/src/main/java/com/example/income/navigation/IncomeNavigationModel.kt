@@ -8,4 +8,6 @@ sealed class IncomeNavigationModel(
     data object IncomeHistory: IncomeNavigationModel(route = "income/history")
 
     data object IncomeDetailById: IncomeNavigationModel(route = "income_detail/{incomeId}")
+
+    data object IncomeAnalysis: IncomeNavigationModel(route = "income/analysis")
 }

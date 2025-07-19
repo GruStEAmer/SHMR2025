@@ -2,6 +2,7 @@ package com.example.income.di.module
 
 import androidx.lifecycle.ViewModel
 import com.example.income.di.annotations.ViewModelKey
+import com.example.income.ui.screens.IncomeAnalysisViewModel
 import com.example.income.ui.screens.IncomeDetailByIdViewModel
 import com.example.income.ui.screens.IncomeHistoryViewModel
 import com.example.income.ui.screens.IncomeViewModel
@@ -20,6 +21,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(IncomeHistoryViewModel::class)
     abstract fun bindIncomeHistoryViewModel(viewModel: IncomeHistoryViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(IncomeAnalysisViewModel::class)
+    abstract fun bindIncomeAnalysisViewModel(viewModel: IncomeAnalysisViewModel): ViewModel
 
     @Binds
     @IntoMap

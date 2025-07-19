@@ -17,7 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.expenses.data.model.TransactionResponse
+import com.example.expenses.navigation.ExpensesNavigationModel
+import com.example.model.TransactionUi
 import com.example.ui.R
 import com.example.ui.components.CustomDatePicker
 import com.example.ui.components.ErrorScreen
@@ -55,7 +56,8 @@ fun ExpensesHistoryScreen(
                 title = "Моя история",
                 startIcon = R.drawable.ic_return,
                 endIcon = R.drawable.ic_analysis,
-                startNavigation = { navController.popBackStack() }
+                startNavigation = { navController.popBackStack() },
+                endNavigation = { navController.navigate(ExpensesNavigationModel.ExpensesAnalysis.route)}
             )
         }
     ) { innerPadding ->
@@ -75,7 +77,7 @@ fun ExpensesHistoryScreen(
             when (uiState) {
                 is UiState.Loading -> LoadingScreen()
                 is UiState.Success -> ExpensesHistoryScreenUi(
-                    (uiState as UiState.Success<List<TransactionResponse>>).data,
+                    (uiState as UiState.Success<List<TransactionUi>>).data,
                     navController = navController
                 )
                 is UiState.Error -> ErrorScreen(
@@ -122,7 +124,7 @@ fun ExpensesHistoryScreen(
 
 @Composable
 fun ExpensesHistoryScreenUi(
-    transactions: List<TransactionResponse>,
+    transactions: List<TransactionUi>,
     navController: NavController
 ) {
     LazyColumn(
@@ -133,13 +135,13 @@ fun ExpensesHistoryScreenUi(
             key = { it -> it.id }
         ) {
             TransactionListItem(
-                categoryId = it.category.id,
-                categoryName = it.category.name,
-                emoji = it.category.emoji,
+                categoryId = it.categoryId,
+                categoryName = it.categoryName,
+                emoji = it.categoryEmoji,
                 amount = it.amount,
                 currency = "RUB",
                 comment = it.comment,
-                date = it.transactionDate,
+                date = it.dateTime,
                 clicked = { navController.navigate("expenses_detail/${it.id}")}
             )
         }

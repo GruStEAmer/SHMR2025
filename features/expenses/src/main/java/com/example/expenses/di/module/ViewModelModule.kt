@@ -2,6 +2,7 @@ package com.example.expenses.di.module
 
 import androidx.lifecycle.ViewModel
 import com.example.expenses.di.annotations.ViewModelKey
+import com.example.expenses.ui.screens.ExpensesAnalysisViewModel
 import com.example.expenses.ui.screens.ExpensesDetailByIdViewModel
 import com.example.expenses.ui.screens.ExpensesHistoryViewModel
 import com.example.expenses.ui.screens.ExpensesViewModel
@@ -25,4 +26,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ExpensesDetailByIdViewModel::class)
     abstract fun bindExpensesDetailByIdViewModel(viewModel: ExpensesDetailByIdViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ExpensesAnalysisViewModel::class)
+    abstract fun bindExpensesAnalysisViewModel(viewModel: ExpensesAnalysisViewModel): ViewModel
 }

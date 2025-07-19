@@ -1,8 +1,8 @@
 package com.example.account.di.deps
 
-import retrofit2.Retrofit
+import com.example.data.repository.AccountRepository
 
 interface AccountDeps {
 
-    val retrofit: Retrofit
+    val accountRepository: AccountRepository
 }

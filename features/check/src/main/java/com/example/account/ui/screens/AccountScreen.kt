@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.account.data.model.AccountResponse
+import com.example.model.AccountUi
 import com.example.ui.R
 import com.example.ui.components.CircleButton
 import com.example.ui.components.ErrorScreen
@@ -27,20 +27,20 @@ fun AccountScreen(
     navigation: () -> Unit,
     accountViewModel: AccountViewModel
 ) {
-    val uiState:UiState<AccountResponse> by accountViewModel.checkUiState.collectAsState()
+    val uiState:UiState<AccountUi> by accountViewModel.accountUiState.collectAsState()
     when(uiState){
         is UiState.Loading -> LoadingScreen()
         is UiState.Success -> AccountScreenUi(
-            account = (uiState as UiState.Success<AccountResponse>).data,
+            account = (uiState as UiState.Success<AccountUi>).data,
             navigation = navigation
         )
-        is UiState.Error -> ErrorScreen(message =  (uiState as UiState.Error).error.message, reloadData = { accountViewModel.getAccountInfo() })
+        is UiState.Error -> ErrorScreen(message =  (uiState as UiState.Error).error.message, reloadData = { accountViewModel.loadAccountData() })
     }
 }
 
 @Composable
 fun AccountScreenUi(
-    account: AccountResponse,
+    account: AccountUi,
     navigation: () -> Unit
 ) {
     Scaffold(
