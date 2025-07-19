@@ -15,7 +15,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,12 +39,10 @@ import com.example.ui.R
 import com.example.ui.components.CustomDatePicker
 import com.example.ui.components.ErrorScreen
 import com.example.ui.components.LoadingScreen
-import com.example.ui.components.StartEndSumDetail
 import com.example.ui.components.listItems.AnalysisListItem
 import com.example.ui.components.listItems.TransactionListItem
 import com.example.ui.navigationBar.AppTopBar
 import com.example.ui.state.UiState
-import com.example.ui.theme.LightGreen
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
