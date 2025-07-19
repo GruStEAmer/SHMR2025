@@ -38,7 +38,7 @@ class IncomeHistoryViewModel @Inject constructor(
             val data = repository.getTransactionsByAccountIdWithDate(
                 ACCOUNT_ID,
                 startDate = startDate.toString(),
-                endDate = endDate.toString()
+                endDate = endDate.plusDays(1).toString()
             )
 
             if (data.isSuccess) {

@@ -8,5 +8,7 @@ sealed class ExpensesNavigationModel(
     data object ExpensesHistory: ExpensesNavigationModel(route = "expenses/history")
 
     data object ExpensesDetailById: ExpensesNavigationModel(route = "expenses_detail/{expensesId}")
+
+    data object ExpensesAnalysis: ExpensesNavigationModel(route = "expenses/analysis")
 }
 

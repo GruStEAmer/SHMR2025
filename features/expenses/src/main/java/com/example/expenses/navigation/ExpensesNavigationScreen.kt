@@ -11,11 +11,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.expenses.di.component.ExpensesComponent
 import com.example.expenses.di.utils.rememberExpensesComponent
+import com.example.expenses.ui.screens.ExpensesAnalysisScreen
 import com.example.expenses.ui.screens.ExpensesDetailByIdScreen
 import com.example.expenses.ui.screens.ExpensesHistoryScreen
 import com.example.expenses.ui.screens.ExpensesScreen
-import com.example.expenses.ui.screens.ExpensesViewModel
-import kotlin.math.exp
 
 @Composable
 fun ExpensesNavigationScreen(
@@ -36,6 +35,12 @@ fun ExpensesNavigationScreen(
         }
         composable(ExpensesNavigationModel.ExpensesHistory.route) {
             ExpensesHistoryScreen(
+                factory = factory,
+                navController = navController
+            )
+        }
+        composable(ExpensesNavigationModel.ExpensesAnalysis.route) {
+            ExpensesAnalysisScreen(
                 factory = factory,
                 navController = navController
             )

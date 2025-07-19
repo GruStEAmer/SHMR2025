@@ -14,40 +14,37 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
-class ExpensesViewModel @Inject constructor(
+class ExpensesAnalysisViewModel @Inject constructor(
     val repository: TransactionRepository
 ): ViewModel() {
     companion object {
         const val ACCOUNT_ID = 11
     }
+
     private val _expensesUiState = MutableStateFlow<UiState<List<TransactionUi>>>(UiState.Loading)
     val expensesUiState: StateFlow<UiState<List<TransactionUi>>> = _expensesUiState.asStateFlow()
 
     private val _sumExpenses = MutableStateFlow(0.0)
     val sumExpenses: StateFlow<Double> = _sumExpenses.asStateFlow()
 
-    init {
-        getTransactions()
-    }
-
-    fun getTransactions(
+    fun getExpenses(
         startDate: LocalDate = LocalDate.now(),
-        endDate: LocalDate = LocalDate.now().plusDays(1)
+        endDate: LocalDate = LocalDate.now(),
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            _expensesUiState.value = UiState.Loading
             _sumExpenses.value = 0.0
+            _expensesUiState.value = UiState.Loading
 
             val data = repository.getTransactionsByAccountIdWithDate(
-                accountId = ACCOUNT_ID,
+                ACCOUNT_ID,
                 startDate = startDate.toString(),
-                endDate = endDate.toString()
+                endDate = endDate.plusDays(1).toString()
             )
 
             if (data.isSuccess) {
-                val transactions = data.getOrNull()!!.filter{ !it.category.isIncome }.map { it.toTransactionUi() }
-                _expensesUiState.value = UiState.Success(transactions)
-                _sumExpenses.value = transactions.sumOf { it.amount.toDouble() }
+                val filteredListIsExpenses = data.getOrNull()!!.filter{ !it.category.isIncome }.map { it.toTransactionUi() }
+                _expensesUiState.value = UiState.Success(filteredListIsExpenses)
+                _sumExpenses.value = filteredListIsExpenses.sumOf { it.amount.toDouble() }
             } else {
                 _expensesUiState.value = UiState.Error(data.exceptionOrNull()!!)
             }

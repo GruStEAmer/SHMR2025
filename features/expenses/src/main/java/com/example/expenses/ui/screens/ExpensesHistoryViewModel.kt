@@ -37,7 +37,7 @@ class ExpensesHistoryViewModel @Inject constructor(
             val data = repository.getTransactionsByAccountIdWithDate(
                 accountId = ACCOUNT_ID,
                 startDate = startDate.toString(),
-                endDate = endDate.toString()
+                endDate = endDate.plusDays(1).toString()
             )
 
             if (data.isSuccess) {
