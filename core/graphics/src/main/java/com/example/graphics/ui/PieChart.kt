@@ -15,6 +15,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -113,7 +114,13 @@ fun LegendItem(category: String, color: Color) {
             }
         }
         Spacer(modifier = Modifier.width(8.dp))
-        Text(text = category, style = MaterialTheme.typography.bodyMedium)
+        Text(
+            text = category,
+            style = MaterialTheme.typography.bodyMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.width(100.dp)
+        )
     }
 }
 

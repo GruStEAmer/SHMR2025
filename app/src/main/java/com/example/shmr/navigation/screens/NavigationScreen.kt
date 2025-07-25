@@ -26,7 +26,7 @@ fun NavigationScreen(navController:NavHostController = rememberNavController()) 
     ) {
         NavHost(
             navController = navController,
-            startDestination = NavigationBottomModel.AccountNavigation.route,
+            startDestination = NavigationBottomModel.CategoriesNavigation.route,
             modifier = Modifier,
             enterTransition = { fadeIn(tween(700)) },
             exitTransition = { fadeOut(tween(700)) },

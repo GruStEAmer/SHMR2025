@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.graphics.ui.PieChart
 import com.example.model.CategoryUi
 import com.example.model.TransactionUi
 import com.example.ui.R
@@ -119,19 +120,6 @@ fun IncomeAnalysisScreen(
             )
             HorizontalDivider()
 
-            Icon(
-                painter = painterResource(R.drawable.round_analysis),
-                contentDescription = "",
-                modifier = Modifier
-                    .clip(shape = CircleShape)
-                    .size(200.dp)
-                    .clickable{}
-                    .padding(20.dp)
-                ,
-                tint = Color.Unspecified
-            )
-            HorizontalDivider()
-
             when (uiState) {
                 is UiState.Loading -> LoadingScreen()
                 is UiState.Success -> IncomeAnalysisScreenUi(
@@ -185,7 +173,12 @@ fun IncomeAnalysisScreenUi(
     transactions: List<Pair<CategoryUi, Double>>,
     sum: Double
 ) {
+    PieChart(
+        chartDataList =
+            transactions.map { it -> Pair(it.first.name, it.second / sum * 100)}
+    )
 
+    HorizontalDivider()
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
