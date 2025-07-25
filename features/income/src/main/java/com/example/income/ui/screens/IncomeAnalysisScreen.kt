@@ -34,11 +34,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.model.CategoryUi
 import com.example.model.TransactionUi
 import com.example.ui.R
 import com.example.ui.components.CustomDatePicker
 import com.example.ui.components.ErrorScreen
 import com.example.ui.components.LoadingScreen
+import com.example.ui.components.listItems.AnalysisDetail
 import com.example.ui.components.listItems.AnalysisListItem
 import com.example.ui.components.listItems.TransactionListItem
 import com.example.ui.navigationBar.AppTopBar
@@ -46,6 +48,7 @@ import com.example.ui.state.UiState
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import kotlin.math.roundToInt
 
 @Composable
 fun IncomeAnalysisScreen(
@@ -62,7 +65,7 @@ fun IncomeAnalysisScreen(
     var showEndDatePicker by remember { mutableStateOf(false) }
 
     LaunchedEffect(startDate, endDate) {
-        incomeViewModel.getIncomes(startDate, endDate)
+        incomeViewModel.getIncomes(startDate = startDate, endDate = endDate)
     }
 
     Scaffold(
@@ -132,15 +135,15 @@ fun IncomeAnalysisScreen(
             when (uiState) {
                 is UiState.Loading -> LoadingScreen()
                 is UiState.Success -> IncomeAnalysisScreenUi(
-                    transactions = (uiState as UiState.Success<List<TransactionUi>>).data,
-                    navController = navController
+                    transactions = (uiState as UiState.Success<List<Pair<CategoryUi,Double>>>).data,
+                    sum = sumTransaction
                 )
                 is UiState.Error -> ErrorScreen(
                     message = (uiState as UiState.Error).error.message ?: "Unknown error",
                     reloadData = {
                         incomeViewModel.getIncomes(
-                            startDate,
-                            endDate
+                            startDate = startDate,
+                            endDate = endDate
                         )
                     }
                 )
@@ -179,25 +182,24 @@ fun IncomeAnalysisScreen(
 
 @Composable
 fun IncomeAnalysisScreenUi(
-    transactions: List<TransactionUi>,
-    navController: NavController
+    transactions: List<Pair<CategoryUi, Double>>,
+    sum: Double
 ) {
+
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
         items(
             items = transactions,
-            key = { it -> it.id }
+            key = { it -> it.first.id }
         ) {
-            TransactionListItem(
-                categoryId = it.categoryId,
-                categoryName = it.categoryName,
-                emoji = it.categoryEmoji,
-                amount = it.amount,
+            AnalysisDetail(
+                categoryId = it.first.id,
+                categoryName = it.first.name,
+                emoji = it.first.emoji,
+                amount = it.second.toString(),
                 currency = "RUB",
-                comment = it.comment,
-                date = it.dateTime,
-                clicked = { navController.navigate("income_detail/${it.id}")}
+                percent = "${(it.second / sum * 100).roundToInt()}%",
             )
         }
     }

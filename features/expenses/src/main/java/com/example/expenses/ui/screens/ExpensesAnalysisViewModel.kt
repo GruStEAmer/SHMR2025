@@ -1,9 +1,12 @@
 package com.example.expenses.ui.screens
 
+import android.util.Log
+import androidx.compose.foundation.gestures.forEach
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.repository.TransactionRepository
 import com.example.mapper.toTransactionUi
+import com.example.model.CategoryUi
 import com.example.model.TransactionUi
 import com.example.ui.state.UiState
 import kotlinx.coroutines.Dispatchers
@@ -21,13 +24,14 @@ class ExpensesAnalysisViewModel @Inject constructor(
         const val ACCOUNT_ID = 11
     }
 
-    private val _expensesUiState = MutableStateFlow<UiState<List<TransactionUi>>>(UiState.Loading)
-    val expensesUiState: StateFlow<UiState<List<TransactionUi>>> = _expensesUiState.asStateFlow()
+    private val _expensesUiState = MutableStateFlow<UiState<List<Pair<CategoryUi, Double>>>>(UiState.Loading)
+    val expensesUiState: StateFlow<UiState<List<Pair<CategoryUi, Double>>>> = _expensesUiState.asStateFlow()
 
     private val _sumExpenses = MutableStateFlow(0.0)
     val sumExpenses: StateFlow<Double> = _sumExpenses.asStateFlow()
 
     fun getExpenses(
+        accountId: Int = ACCOUNT_ID,
         startDate: LocalDate = LocalDate.now(),
         endDate: LocalDate = LocalDate.now(),
     ) {
@@ -35,19 +39,43 @@ class ExpensesAnalysisViewModel @Inject constructor(
             _sumExpenses.value = 0.0
             _expensesUiState.value = UiState.Loading
 
-            val data = repository.getTransactionsByAccountIdWithDate(
-                ACCOUNT_ID,
+            val dataResult = repository.getTransactionsByAccountIdWithDate(
+                accountId,
                 startDate = startDate.toString(),
                 endDate = endDate.plusDays(1).toString()
             )
 
-            if (data.isSuccess) {
-                val filteredListIsExpenses = data.getOrNull()!!.filter{ !it.category.isIncome }.map { it.toTransactionUi() }
-                _expensesUiState.value = UiState.Success(filteredListIsExpenses)
-                _sumExpenses.value = filteredListIsExpenses.sumOf { it.amount.toDouble() }
-            } else {
-                _expensesUiState.value = UiState.Error(data.exceptionOrNull()!!)
-            }
+            dataResult.fold(
+                onSuccess = { networkTransactions ->
+                    val expenseTransactionsUi = networkTransactions
+                        .filter { !it.category.isIncome }
+                        .map{ it.toTransactionUi() }
+
+                    _sumExpenses.value = expenseTransactionsUi.sumOf {
+                        it.amount.toDoubleOrNull() ?: 0.0
+                    }
+
+                    val expensesByCategory = HashMap<CategoryUi, Double>()
+                    expenseTransactionsUi.forEach { transaction ->
+                        val category = CategoryUi(
+                            id = transaction.categoryId,
+                            name = transaction.categoryName,
+                            emoji = transaction.categoryEmoji,
+                            isIncome = transaction.isIncome
+                        )
+                        val amount = transaction.amount.toDoubleOrNull() ?: 0.0
+
+                        expensesByCategory[category] = (expensesByCategory[category] ?: 0.0) + amount
+                    }
+
+                    _expensesUiState.value = UiState.Success(expensesByCategory.toList())
+
+                },
+                onFailure = { exception ->
+                    _expensesUiState.value = UiState.Error(exception)
+                    Log.e("ExpensesVM", "Error fetching expenses: ${exception.message}", exception)
+                }
+            )
         }
     }
 }
